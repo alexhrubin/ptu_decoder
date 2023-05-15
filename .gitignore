@@ -1,0 +1,7 @@
+.venv/
+venv/
+.vscode/
+build/
+dist/
+ptu_decoder.egg-info/
+.DS_Store
