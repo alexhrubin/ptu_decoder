@@ -5,3 +5,5 @@ build/
 dist/
 ptu_decoder.egg-info/
 .DS_Store
+**.pyc
+**.so
