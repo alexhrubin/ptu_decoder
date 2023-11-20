@@ -1,10 +1,11 @@
 # cython: language_level=3
+# distutils: language=c++
 
 from libc.stdio cimport FILE, fopen, fread, fseek, fclose, SEEK_SET, SEEK_END, ftell, perror, SEEK_CUR
-from libc.string cimport memcmp
+from libc.string cimport memcmp, memset
 from libc.stdint cimport int32_t, int64_t, uint32_t
 
-from libc.stdlib cimport malloc, free
+from libc.stdlib cimport malloc, free, realloc
 from libc.stdio cimport fopen, fread, fclose, FILE
 from libcpp.map cimport map
 
@@ -14,6 +15,7 @@ import struct
 import io
 
 TIME_OVERFLOW = 210698240
+T3_WRAPAROUND = 2 ** 16
 
 
 cdef void check_magic_string(FILE *fp) except *:  # except * allows propagating C exceptions as Python exceptions
@@ -119,108 +121,107 @@ def read_header(path):
     return dict(zip(tagNames, tagValues)), tags_end
 
 
-def t3_to_histogram(str path, int min_dtime = -1, int max_dtime = -1):
+def t3_to_histogram(str path, double min_ns = -1, double max_ns = 0xFFFFFFFF):
     tags, header_end = read_header(path)
     num_records = tags["TTResult_NumberOfRecords"]
     resolution = tags["MeasDesc_Resolution"] * 1e9  # in nanoseconds
 
-    if min_dtime > max_dtime:
+    if min_ns > max_ns:
         raise ValueError("min_dtime cannot be larger than max_dtime.")
 
-    return __t3_to_histogram(path, header_end, num_records, resolution, min_dtime, max_dtime)
-
-
-cdef dict __t3_to_histogram(str path, int header_end, int num_records, float resolution, int min_dtime = -1, int max_dtime = -1):
-    cdef:
-        FILE *fp = fopen(path.encode('utf-8'), "rb")
-        unsigned int T3_WRAPAROUND = 2 ** 16
-        unsigned int overflow = 0
-        unsigned int record
-        int i
-        int dtime
-        map[float, int] counts_map
-        char *buffer
-        size_t record_size = sizeof(record)
-        size_t buffer_size = record_size * 10000  # adjust the buffer size to your needs
-        size_t read_count
-
-    if not fp:
-        raise FileNotFoundError("Could not open file: " + path)
-
+    cdef FILE *fp = fopen(path.encode('utf-8'), "rb")
     fseek(fp, header_end, SEEK_SET)
 
-    # Allocate a buffer to read in bulk
-    buffer = <char *>malloc(buffer_size)
-    if not buffer:
-        raise MemoryError("Failed to allocate buffer")
+    bin_size_ps = tags["MeasDesc_Resolution"] * 1e12
+    sync_rate_Hz = tags["TTResult_SyncRate"]
+    histogrammer = T3Histogrammer(
+        bin_size_ps=bin_size_ps,
+        sync_rate_Hz=sync_rate_Hz,
+        min_ns=min_ns,
+        max_ns=max_ns,
+    )
 
-    try:
-        while True:
-            # Read in a buffer's worth of data
-            read_count = fread(buffer, record_size, 10000, fp)
-            if read_count == 0:
-                break
+    cdef uint32_t dtime
+    cdef uint32_t record
+    cdef size_t record_size = sizeof(record)
+    cdef size_t buffer_size = record_size * 1_000_000
+    cdef size_t read_count
 
-            # Process each record in the buffer
-            for i in range(read_count):
-                record = (<unsigned int *>buffer)[i]
-                dtime = (record & 0x0FFF0000) >> 16
+    buff = <char *>malloc(buffer_size)
 
-                dtime_ns = dtime * resolution
-                if (min_dtime != -1 and dtime_ns < min_dtime) or (max_dtime != -1 and dtime_ns > max_dtime):
-                    continue
+    while True:
+        read_count = fread(buff, record_size, 1_000_000, fp)
+        if read_count == 0:  # hit EOF
+            break
 
-                counts_map[dtime_ns] += 1
-    finally:
-        free(buffer)
-        fclose(fp)
-
-    # Convert the C++ map to a Python dict
-    counts = dict(counts_map)
-
-    return counts
-
+        for i in range(read_count):
+            record = (<uint32_t *>buff)[i]
+            histogrammer.click(record)
+            
+    fclose(fp)
+    return histogrammer.times_ns, histogrammer.counts
 
 
 cdef class T3Histogrammer:
-    cdef FILE *fp
-    cdef long long overflow_correction
-    cdef unsigned int num_events
-    cdef dict photon_timestamps
+    cdef public double bin_size_ns
+    cdef public double min_bin, max_bin
+    cdef public unsigned int overflow_correction
+    cdef uint32_t *counts_arr
+    cdef uint32_t *new_counts_arr
+    cdef public int array_size
+    cdef int new_size
 
-    def __cinit__(self, str file_path):
-        self.fp = fopen(file_path.encode('utf-8'), "rb")
-        if self.fp is NULL:
-            raise FileNotFoundError("Could not open file")
+    def __cinit__(self, bin_size_ps, sync_rate_Hz, double min_ns=-1, double max_ns=0xFFFFFFFF):
+        self.bin_size_ns = bin_size_ps / 1000  # change to nanoseconds
+        # convert max/min from nanoseconds to bin number
+        self.min_bin, self.max_bin = min_ns * 1000 / bin_size_ps, max_ns * 1000 / bin_size_ps
         self.overflow_correction = 0
-        self.photon_timestamps = {}  # keys are channels, values are timestamps
+        # Determine the size of the counts array based on sync_rate
+        # The latest timestamp we should get is equal to the sync period
+        self.array_size = int(1e9 / (sync_rate_Hz * self.bin_size_ns))
+        self.counts_arr = <uint32_t*>malloc(self.array_size * sizeof(uint32_t))
+        if self.counts_arr is NULL:
+            raise MemoryError("Failed to allocate memory for counts array.")
+        # Initialize array with zeros
+        memset(self.counts_arr, 0, self.array_size * sizeof(uint32_t))
 
-    def histogram(self, num_records, min=None, max=None):
-        fseek(self.fp, 3584 + 48, SEEK_SET); # go to the start of the timing data
+    property times_ns:
+        def __get__(self):
+            return [i * self.bin_size_ns for i in range(self.array_size) if (self.min_bin <= i) and (i <= self.max_bin)]
 
-        cdef unsigned int T3_WRAPAROUND = 2 ** 16  # 65536
-        cdef unsigned int overflow = 0
-        cdef unsigned int record
+    property counts:
+        def __get__(self):
+            return [self.counts_arr[i] for i in range(self.array_size) if (self.min_bin <= i) and (i <= self.max_bin)]
 
-        counts = {}
+    def click(self, uint32_t record):
+        cdef uint32_t dtime = (record & 0x0FFF0000) >> 16
+        if (dtime < self.min_bin) or (self.max_bin < dtime):
+            return  # return early if out of desired range
 
-        for _ in range(num_records):
-            fread(&record, sizeof(record), 1, self.fp)
+        if dtime < self.array_size:
+            self.counts_arr[dtime] += 1
+        else:
+            # Calculate new size (1% larger)
+            new_size = int(self.array_size * 1.01)
 
-            dtime = (record & 0x0FFF0000) >> 16;
-
-            if (min and dtime < min) or (max and dtime > max):
-                continue
-            
-            if dtime in counts:
-                counts[dtime] += 1
+            # Allocate new memory block
+            new_counts_arr = <uint32_t *>realloc(self.counts_arr, new_size * sizeof(uint32_t))
+            if new_counts_arr is NULL:
+                # Handle allocation failure
+                raise Exception("Memory allocation error.")
             else:
-                counts[dtime] = 1
+                # Zero out the new portion
+                memset(new_counts_arr + self.array_size, 0, (new_size - self.array_size) * sizeof(uint32_t))
 
-        return counts
+                # Update the pointer and size
+                self.counts_arr = new_counts_arr
+                self.array_size = new_size
 
+            self.counts_arr[dtime] += 1
 
-
+    def batch(self, records):
+        for record in records:
+            self.click(record)
 
 
 cdef class StreamDecoder:

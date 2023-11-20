@@ -4,7 +4,8 @@ build:
 	python setup.py build_ext --inplace
 
 install:
-	python setup.py install
+	# python setup.py install
+	pip install . --no-cache-dir --force-reinstall
 
 clean:
 	python setup.py clean --all
