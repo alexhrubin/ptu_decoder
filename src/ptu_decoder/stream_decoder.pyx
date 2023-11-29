@@ -10,9 +10,7 @@ from libc.stdio cimport fopen, fread, fclose, FILE
 from libcpp.map cimport map
 
 import time
-import sys
 import struct
-import io
 
 TIME_OVERFLOW = 210698240
 T3_WRAPAROUND = 2 ** 16
@@ -224,96 +222,63 @@ cdef class T3Histogrammer:
             self.click(record)
 
 
-cdef class StreamDecoder:
-    cdef FILE *fp
+def t2_to_timestamps(str path):
+    tags, header_end = read_header(path)
+    num_records = tags["TTResult_NumberOfRecords"]
+    resolution = tags["MeasDesc_Resolution"] * 1e9  # in nanoseconds
+
+    cdef FILE *fp = fopen(path.encode('utf-8'), "rb")
+    fseek(fp, header_end, SEEK_SET)
+
+    resolution_ps = tags["MeasDesc_Resolution"] * 1e12
+
+    processor = T2Streamer(resolution_ps)
+
+    cdef uint32_t dtime
+    cdef uint32_t record
+    cdef size_t record_size = sizeof(record)
+    cdef size_t buffer_size = record_size * 1_000_000
+    cdef size_t read_count
+
+    buff = <char *>malloc(buffer_size)
+
+    while True:
+        read_count = fread(buff, record_size, 1_000_000, fp)
+        if read_count == 0:  # hit EOF
+            break
+
+        for i in range(read_count):
+            record = (<uint32_t *>buff)[i]
+            processor.click(record)
+
+    fclose(fp)
+    return processor.ch0_times_ns, processor.ch1_times_ns
+
+
+cdef class T2Streamer:
+    cdef size_t ch0_max_timestamps
+    cdef size_t ch1_max_timestamps
     cdef long long overflow_correction
     cdef unsigned int num_events
-    cdef dict photon_timestamps
+    cdef long long *ch0_photon_timestamps
+    cdef long long *ch1_photon_timestamps
+    cdef size_t ch0_timestamp_index
+    cdef size_t ch1_timestamp_index
+    cdef public double resolution_ns
 
-    def __cinit__(self, str file_path):
-        self.fp = fopen(file_path.encode('utf-8'), "rb")
-        if self.fp is NULL:
-            raise FileNotFoundError("Could not open file")
+    def __cinit__(self, resolution_ps):
+        self.ch0_max_timestamps = 1_000_000
+        self.ch1_max_timestamps = 1_000_000
+        self.ch0_photon_timestamps = <long long *>malloc(self.ch0_max_timestamps * sizeof(long long))
+        self.ch1_photon_timestamps = <long long *>malloc(self.ch1_max_timestamps * sizeof(long long))
+        self.ch0_timestamp_index = 0
+        self.ch1_timestamp_index = 0
         self.overflow_correction = 0
-        self.photon_timestamps = {}  # keys are channels, values are timestamps
+        self.resolution_ns = resolution_ps / 1_000
 
-    def times_between_channels(self):
-        timing_data_starts = 3584 + 48;
-        fseek(self.fp, 0, SEEK_END);  # move to end of file
-        cdef long int eof = ftell(self.fp);  # get position of EOF
-        num_records = (eof - timing_data_starts) // 4;  # 4 bytes (32 bits) per timing record
-
-        fseek(self.fp, 3584 + 48, SEEK_SET); # go to the start of the timing data
-        cdef unsigned int record
-
-        cdef unsigned int last
-        last_channel = None
-        first = False
-
-        time_deltas = []
-        for i in range(num_records):
-            fread(&record, sizeof(record), 1, self.fp)
-            time = record & 0x0FFFFFFF  # Extracting the first 28 bits
-            channel = (record & 0xF0000000) >> 28  # Extracting the last 4 bits
-
-            if channel == 0xF:
-                markers = time & 0xF
-                if markers == 0:
-                    self.overflow_correction += TIME_OVERFLOW
-            else:
-                if channel not in self.photon_timestamps:
-                    self.photon_timestamps[channel] = []
-                true_time = (self.overflow_correction + time) * 4e-12
-
-                if channel != last_channel:
-                    if not first:
-                        time_deltas.append(true_time - last)
-                    last_channel = channel
-                    last = true_time
-                    first = False
-        return time_deltas
-
-
-    def read_all(self):
-        timing_data_starts = 3584 + 48;
-        fseek(self.fp, 0, SEEK_END);  # move to end of file
-        cdef long int eof = ftell(self.fp);  # get position of EOF
-        num_records = (eof - timing_data_starts) // 4;  # 4 bytes (32 bits) per timing record
-
-        fseek(self.fp, 3584 + 48, SEEK_SET); # go to the start of the timing data
-        cdef unsigned int record
-
-        for i in range(num_records):
-            fread(&record, sizeof(record), 1, self.fp)
-            time = record & 0x0FFFFFFF  # Extracting the first 28 bits
-            channel = (record & 0xF0000000) >> 28  # Extracting the last 4 bits
-
-            if channel == 0xF:
-                markers = time & 0xF
-                if markers == 0:
-                    self.overflow_correction += TIME_OVERFLOW
-            else:
-                if channel not in self.photon_timestamps:
-                    self.photon_timestamps[channel] = []
-                true_time = self.overflow_correction + time
-                self.photon_timestamps[channel].append(true_time * 4e-12)
-
-        return self.photon_timestamps
-
-    def n(self):
-        return len(self.photon_timestamps)
-
-    def __dealloc__(self):
-        if self.fp is not NULL:
-            fclose(self.fp)
-
-    def event(self):
-        cdef unsigned int record
+    def click(self, uint32_t record):
         cdef unsigned int time, channel
         cdef long long true_time
-
-        if fread(&record, sizeof(record), 1, self.fp) != 1:
-            return None  # End of File or error
 
         # Manually extract time and channel from the 32-bit integer
         time = record & 0x0FFFFFFF  # Extracting the first 28 bits
@@ -322,8 +287,46 @@ cdef class StreamDecoder:
         if channel == 0xF:
             markers = time & 0xF
             if markers == 0:
-                self.overflow_correction += 210698240
+                self.overflow_correction += 210698240  # wraparound
             return None
         else:
             true_time = self.overflow_correction + time
-            return {"channel": channel, "time": true_time}
+            if channel == 0:
+                if self.ch0_timestamp_index == self.ch0_max_timestamps - 1:
+                    new_size = int(1.1 * self.ch0_max_timestamps)
+                    self.ch0_photon_timestamps = <long long *>realloc(self.ch0_photon_timestamps, new_size * sizeof(long long))
+                    self.ch0_max_timestamps = new_size
+
+                self.ch0_photon_timestamps[self.ch0_timestamp_index] = true_time
+                self.ch0_timestamp_index += 1
+            elif channel == 1:
+                if self.ch1_timestamp_index == self.ch1_max_timestamps - 1:
+                    new_size = int(1.1 * self.ch1_max_timestamps)
+                    self.ch1_photon_timestamps = <long long *>realloc(self.ch1_photon_timestamps, new_size * sizeof(long long))
+                    self.ch1_max_timestamps = new_size
+
+                self.ch1_photon_timestamps[self.ch1_timestamp_index] = true_time
+                self.ch1_timestamp_index += 1
+            else:
+                # This is for special record types, which currently we just ignore
+                pass
+
+    def batch(self, records):
+        for record in records:
+            self.click(record)
+
+    property ch0_times_ns:
+        def __get__(self):
+            return [self.ch0_photon_timestamps[i] * self.resolution_ns for i in range(self.ch0_timestamp_index)]
+
+    property ch1_times_ns:
+        def __get__(self):
+            return [self.ch1_photon_timestamps[i] * self.resolution_ns for i in range(self.ch1_timestamp_index)]
+
+    property ch0_count:
+        def __get__(self):
+            return self.ch0_timestamp_index
+
+    property ch1_count:
+        def __get__(self):
+            return self.ch1_timestamp_index
