@@ -12,8 +12,7 @@ from libcpp.map cimport map
 import time
 import struct
 
-TIME_OVERFLOW = 210698240
-T3_WRAPAROUND = 2 ** 16
+cdef long long TIME_OVERFLOW = 210698240
 
 
 cdef void check_magic_string(FILE *fp) except *:  # except * allows propagating C exceptions as Python exceptions
@@ -163,7 +162,6 @@ def t3_to_histogram(str path, double min_ns = -1, double max_ns = 0xFFFFFFFF):
 cdef class T3Histogrammer:
     cdef public double bin_size_ns
     cdef public double min_bin, max_bin
-    cdef public unsigned int overflow_correction
     cdef uint32_t *counts_arr
     cdef uint32_t *new_counts_arr
     cdef public int array_size
@@ -173,7 +171,6 @@ cdef class T3Histogrammer:
         self.bin_size_ns = bin_size_ps / 1000  # change to nanoseconds
         # convert max/min from nanoseconds to bin number
         self.min_bin, self.max_bin = min_ns * 1000 / bin_size_ps, max_ns * 1000 / bin_size_ps
-        self.overflow_correction = 0
         # Determine the size of the counts array based on sync_rate
         # The latest timestamp we should get is equal to the sync period
         self.array_size = int(1e9 / (sync_rate_Hz * self.bin_size_ns))
@@ -287,7 +284,7 @@ cdef class T2Streamer:
         if channel == 0xF:
             markers = time & 0xF
             if markers == 0:
-                self.overflow_correction += 210698240  # wraparound
+                self.overflow_correction += TIME_OVERFLOW  # wraparound
             return None
         else:
             true_time = self.overflow_correction + time
