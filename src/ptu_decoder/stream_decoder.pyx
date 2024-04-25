@@ -167,7 +167,13 @@ cdef class T3Histogrammer:
     cdef public int array_size
     cdef int new_size
 
-    def __cinit__(self, bin_size_ps, sync_rate_Hz, double min_ns=-1, double max_ns=0xFFFFFFFF):
+    cdef double overflow_correction
+    cdef public double true_nsync
+    cdef public int sync_rate_Hz
+
+    def __cinit__(self, bin_size_ps, sync_rate_Hz, double min_ns=-1, double max_ns=0xFFFFFFFF,
+            double start_sec=-1, double stop_sec=0xFFFFFFFF,
+        ):
         self.bin_size_ns = bin_size_ps / 1000  # change to nanoseconds
         # convert max/min from nanoseconds to bin number
         self.min_bin, self.max_bin = min_ns * 1000 / bin_size_ps, max_ns * 1000 / bin_size_ps
@@ -180,6 +186,10 @@ cdef class T3Histogrammer:
         # Initialize array with zeros
         memset(self.counts_arr, 0, self.array_size * sizeof(uint32_t))
 
+        self.true_nsync = 0
+        self.overflow_correction = 0
+        self.sync_rate_Hz = sync_rate_Hz
+
     property times_ns:
         def __get__(self):
             return [i * self.bin_size_ns for i in range(self.array_size) if (self.min_bin <= i) and (i <= self.max_bin)]
@@ -188,31 +198,48 @@ cdef class T3Histogrammer:
         def __get__(self):
             return [self.counts_arr[i] for i in range(self.array_size) if (self.min_bin <= i) and (i <= self.max_bin)]
 
+    property run_time_sec:
+        def __get__(self):
+            return self.true_nsync / self.sync_rate_Hz
+
     def click(self, uint32_t record):
+        cdef uint32_t channel = (record & 0xF0000000)
         cdef uint32_t dtime = (record & 0x0FFF0000) >> 16
-        if (dtime < self.min_bin) or (self.max_bin < dtime):
-            return  # return early if out of desired range
+        cdef uint32_t nsync = (record & 0x0000FFFF)
 
-        if dtime < self.array_size:
-            self.counts_arr[dtime] += 1
-        else:
-            # Calculate new size (1% larger)
-            new_size = int(self.array_size * 1.01)
-
-            # Allocate new memory block
-            new_counts_arr = <uint32_t *>realloc(self.counts_arr, new_size * sizeof(uint32_t))
-            if new_counts_arr is NULL:
-                # Handle allocation failure
-                raise Exception("Memory allocation error.")
+        if channel == 0xF0000000:  # special record
+            if dtime == 0:  # overflow
+                self.overflow_correction += 65536
             else:
-                # Zero out the new portion
-                memset(new_counts_arr + self.array_size, 0, (new_size - self.array_size) * sizeof(uint32_t))
+                self.true_nsync = self.overflow_correction + nsync
 
-                # Update the pointer and size
-                self.counts_arr = new_counts_arr
-                self.array_size = new_size
+        else:
+            self.true_nsync = self.overflow_correction + nsync
+            
+            # cdef uint32_t dtime = (record & 0x0FFF0000) >> 16
+            if (dtime < self.min_bin) or (self.max_bin < dtime):
+                return  # return early if out of desired range
 
-            self.counts_arr[dtime] += 1
+            if dtime < self.array_size:
+                self.counts_arr[dtime] += 1
+            else:
+                # Calculate new size (1% larger)
+                new_size = int(self.array_size * 1.01)
+
+                # Allocate new memory block
+                new_counts_arr = <uint32_t *>realloc(self.counts_arr, new_size * sizeof(uint32_t))
+                if new_counts_arr is NULL:
+                    # Handle allocation failure
+                    raise Exception("Memory allocation error.")
+                else:
+                    # Zero out the new portion
+                    memset(new_counts_arr + self.array_size, 0, (new_size - self.array_size) * sizeof(uint32_t))
+
+                    # Update the pointer and size
+                    self.counts_arr = new_counts_arr
+                    self.array_size = new_size
+
+                self.counts_arr[dtime] += 1
 
     def batch(self, records):
         for record in records:
