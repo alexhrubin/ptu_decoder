@@ -268,9 +268,17 @@ cdef class T3Histogrammer:
         def __get__(self):
             return [self.counts_arr[i] for i in range(self.array_size) if (self.min_bin <= i) and (i <= self.max_bin)]
 
-    property run_time_sec:
+    property runtime_sec:
         def __get__(self):
             return self.true_nsync / self.sync_rate_Hz
+
+    property count_rate:
+        def __get__(self):
+            cdef uint32_t total = 0
+            cdef int i
+            for i in range(self.array_size):
+                total += self.counts_arr[i]
+            return total / self.runtime_sec
 
     def click(self, uint32_t record):
         cdef uint32_t channel = (record & 0xF0000000)
@@ -319,6 +327,12 @@ cdef class T3Histogrammer:
     def batch(self, records):
         for record in records:
             self.click(record)
+
+    def clear(self):
+        # reinitialize array with zeros
+        memset(self.counts_arr, 0, self.array_size * sizeof(uint32_t))
+        self.true_nsync = 0
+        self.overflow_correction = 0
 
 
 def t2_to_timestamps(str path):
