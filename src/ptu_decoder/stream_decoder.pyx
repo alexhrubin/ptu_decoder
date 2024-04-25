@@ -118,45 +118,104 @@ def read_header(path):
     return dict(zip(tagNames, tagValues)), tags_end
 
 
-def t3_to_histogram(str path, double min_ns = -1, double max_ns = 0xFFFFFFFF):
+def t3_to_histogram(
+    str path,
+    double min_ns = -1,
+    double max_ns = 0xFFFFFFFF,
+    window_ends_sec = [],
+    int segments = 1,
+):
+    if segments < 1:
+        raise ValueError("Cannot have < 1 segments.")
+    if window_ends_sec and segments > 1:
+        raise ValueError("Cannot specify both `window_ends_sec` and `segments` simultaneously.")
+    if min_ns > max_ns:
+        raise ValueError("min_dtime cannot be larger than max_dtime.")
+
     tags, header_end = read_header(path)
     num_records = tags["TTResult_NumberOfRecords"]
     resolution = tags["MeasDesc_Resolution"] * 1e9  # in nanoseconds
-
-    if min_ns > max_ns:
-        raise ValueError("min_dtime cannot be larger than max_dtime.")
 
     cdef FILE *fp = fopen(path.encode('utf-8'), "rb")
     fseek(fp, header_end, SEEK_SET)
 
     bin_size_ps = tags["MeasDesc_Resolution"] * 1e12
     sync_rate_Hz = tags["TTResult_SyncRate"]
-    histogrammer = T3Histogrammer(
-        bin_size_ps=bin_size_ps,
-        sync_rate_Hz=sync_rate_Hz,
-        min_ns=min_ns,
-        max_ns=max_ns,
-    )
+    measurement_runtime_sec = tags["TTResult_StopAfter"] / 1000
 
-    cdef uint32_t dtime
+    if window_ends_sec:
+        # alert the user if the user-supplied window ends don't capture all available data
+        if window_ends_sec[-1] < measurement_runtime_sec:
+            remaining_time = measurement_runtime_sec - window_ends_sec[-1]
+            print(f"Warning: some measurement time left unchecked: ({remaining_time:.1f} sec)")
+    else:
+        window_ends_sec = [(i + 1) * measurement_runtime_sec // segments for i in range(segments)]
+
+    window_ends_nsync = [we * sync_rate_Hz for we in window_ends_sec]
+
+    window_starts_sec = [0] + window_ends_sec[:-1]
+    
+    histogrammers = [
+        T3Histogrammer(
+            bin_size_ps=bin_size_ps,
+            sync_rate_Hz=sync_rate_Hz,
+            min_ns=min_ns,
+            max_ns=max_ns,
+            start_sec=ws,
+            stop_sec=we,
+        )
+        for ws, we in zip(window_starts_sec, window_ends_sec)
+    ]
+
     cdef uint32_t record
     cdef size_t record_size = sizeof(record)
     cdef size_t buffer_size = record_size * 1_000_000
     cdef size_t read_count
-
     buff = <char *>malloc(buffer_size)
+
+    cdef overflow_correction = 0
+    cdef true_nsync = 0
+    cdef uint32_t channel
+    cdef uint32_t dtime
+    cdef uint32_t nsync
+    cdef current_hist_idx = 0
 
     while True:
         read_count = fread(buff, record_size, 1_000_000, fp)
+
         if read_count == 0:  # hit EOF
             break
 
         for i in range(read_count):
             record = (<uint32_t *>buff)[i]
-            histogrammer.click(record)
+
+            channel = (record & 0xF0000000)
+            dtime = (record & 0x0FFF0000) >> 16
+            nsync = (record & 0x0000FFFF)
+
+            if channel == 0xF0000000:  # special record
+                if dtime == 0:  # overflow
+                    overflow_correction += 65536
+                else:
+                    true_nsync = overflow_correction + nsync
+            else:
+                true_nsync = overflow_correction + nsync
+            
+            # This assumes the windows are wide enough that each will get at least 1 photon
+            # That's a very reasonable assumption, but it's possible to violate it!
+            if true_nsync > window_ends_nsync[current_hist_idx]:
+                if current_hist_idx == len(window_ends_nsync) - 1:
+                    return histogrammers
+                current_hist_idx += 1
+            
+            histogrammers[current_hist_idx]._click(dtime)
             
     fclose(fp)
-    return histogrammer.times_ns, histogrammer.counts
+
+    if len(histogrammers) == 1:
+        return histogrammers[0].times_ns, histogrammers[0].counts
+
+    return histogrammers
 
 
 cdef class T3Histogrammer:
@@ -171,8 +230,13 @@ cdef class T3Histogrammer:
     cdef public double true_nsync
     cdef public int sync_rate_Hz
 
+    cdef public start_sec
+    cdef double start_nsync
+    cdef public stop_sec
+    cdef double stop_nsync
+
     def __cinit__(self, bin_size_ps, sync_rate_Hz, double min_ns=-1, double max_ns=0xFFFFFFFF,
-            double start_sec=-1, double stop_sec=0xFFFFFFFF,
+            double start_sec=0, double stop_sec=0xFFFFFFFF,
         ):
         self.bin_size_ns = bin_size_ps / 1000  # change to nanoseconds
         # convert max/min from nanoseconds to bin number
@@ -189,6 +253,12 @@ cdef class T3Histogrammer:
         self.true_nsync = 0
         self.overflow_correction = 0
         self.sync_rate_Hz = sync_rate_Hz
+
+        # Allows windowing: only record events falling between `start_sec` and `stop_sec`
+        self.start_sec = start_sec
+        self.start_nsync = start_sec * sync_rate_Hz
+        self.stop_sec = stop_sec
+        self.stop_nsync = stop_sec * sync_rate_Hz
 
     property times_ns:
         def __get__(self):
@@ -215,31 +285,36 @@ cdef class T3Histogrammer:
 
         else:
             self.true_nsync = self.overflow_correction + nsync
-            
-            # cdef uint32_t dtime = (record & 0x0FFF0000) >> 16
-            if (dtime < self.min_bin) or (self.max_bin < dtime):
-                return  # return early if out of desired range
+            if (self.true_nsync < self.start_nsync) or (self.stop_nsync < self.true_nsync):
+                # We're outside the time range that we care about, so ignore this event
+                return
 
-            if dtime < self.array_size:
-                self.counts_arr[dtime] += 1
+            self._click(dtime)
+
+    def _click(self, uint32_t dtime):
+        if (dtime < self.min_bin) or (self.max_bin < dtime):
+            return  # return early if out of desired range
+
+        if dtime < self.array_size:
+            self.counts_arr[dtime] += 1
+        else:
+            # Calculate new size (1% larger)
+            new_size = int(self.array_size * 1.01)
+
+            # Allocate new memory block
+            new_counts_arr = <uint32_t *>realloc(self.counts_arr, new_size * sizeof(uint32_t))
+            if new_counts_arr is NULL:
+                # Handle allocation failure
+                raise Exception("Memory allocation error.")
             else:
-                # Calculate new size (1% larger)
-                new_size = int(self.array_size * 1.01)
+                # Zero out the new portion
+                memset(new_counts_arr + self.array_size, 0, (new_size - self.array_size) * sizeof(uint32_t))
 
-                # Allocate new memory block
-                new_counts_arr = <uint32_t *>realloc(self.counts_arr, new_size * sizeof(uint32_t))
-                if new_counts_arr is NULL:
-                    # Handle allocation failure
-                    raise Exception("Memory allocation error.")
-                else:
-                    # Zero out the new portion
-                    memset(new_counts_arr + self.array_size, 0, (new_size - self.array_size) * sizeof(uint32_t))
+                # Update the pointer and size
+                self.counts_arr = new_counts_arr
+                self.array_size = new_size
 
-                    # Update the pointer and size
-                    self.counts_arr = new_counts_arr
-                    self.array_size = new_size
-
-                self.counts_arr[dtime] += 1
+            self.counts_arr[dtime] += 1
 
     def batch(self, records):
         for record in records:
