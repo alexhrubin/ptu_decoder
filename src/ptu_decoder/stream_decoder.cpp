@@ -2515,13 +2515,13 @@ static const char __pyx_k_buffer_size[] = "buffer_size";
 static const char __pyx_k_num_records[] = "num_records";
 static const char __pyx_k_read_header[] = "read_header";
 static const char __pyx_k_record_size[] = "record_size";
+static const char __pyx_k_runtime_sec[] = "runtime_sec";
 static const char __pyx_k_tagDataList[] = "tagDataList";
 static const char __pyx_k_tyTDateTime[] = "tyTDateTime";
 static const char __pyx_k_ch0_times_ns[] = "ch0_times_ns";
 static const char __pyx_k_ch1_times_ns[] = "ch1_times_ns";
 static const char __pyx_k_initializing[] = "_initializing";
 static const char __pyx_k_is_coroutine[] = "_is_coroutine";
-static const char __pyx_k_run_time_sec[] = "run_time_sec";
 static const char __pyx_k_stringsource[] = "<stringsource>";
 static const char __pyx_k_sync_rate_Hz[] = "sync_rate_Hz";
 static const char __pyx_k_tyAnsiString[] = "tyAnsiString";
@@ -2579,7 +2579,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_2t3_to_histogram(CYTHON
 static int __pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer___cinit__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self, PyObject *__pyx_v_bin_size_ps, PyObject *__pyx_v_sync_rate_Hz, double __pyx_v_min_ns, double __pyx_v_max_ns, double __pyx_v_start_sec, double __pyx_v_stop_sec); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_8times_ns___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_6counts___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_time_sec___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_11runtime_sec___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_10count_rate___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_2click(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self, uint32_t __pyx_v_record); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_4_click(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self, uint32_t __pyx_v_dtime); /* proto */
@@ -2788,7 +2788,7 @@ typedef struct {
   PyObject *__pyx_n_s_remaining_time;
   PyObject *__pyx_n_s_resolution;
   PyObject *__pyx_n_s_resolution_ps;
-  PyObject *__pyx_n_s_run_time_sec;
+  PyObject *__pyx_n_s_runtime_sec;
   PyObject *__pyx_kp_u_sec;
   PyObject *__pyx_n_s_segments;
   PyObject *__pyx_n_s_self;
@@ -3059,7 +3059,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_remaining_time);
   Py_CLEAR(clear_module_state->__pyx_n_s_resolution);
   Py_CLEAR(clear_module_state->__pyx_n_s_resolution_ps);
-  Py_CLEAR(clear_module_state->__pyx_n_s_run_time_sec);
+  Py_CLEAR(clear_module_state->__pyx_n_s_runtime_sec);
   Py_CLEAR(clear_module_state->__pyx_kp_u_sec);
   Py_CLEAR(clear_module_state->__pyx_n_s_segments);
   Py_CLEAR(clear_module_state->__pyx_n_s_self);
@@ -3308,7 +3308,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_remaining_time);
   Py_VISIT(traverse_module_state->__pyx_n_s_resolution);
   Py_VISIT(traverse_module_state->__pyx_n_s_resolution_ps);
-  Py_VISIT(traverse_module_state->__pyx_n_s_run_time_sec);
+  Py_VISIT(traverse_module_state->__pyx_n_s_runtime_sec);
   Py_VISIT(traverse_module_state->__pyx_kp_u_sec);
   Py_VISIT(traverse_module_state->__pyx_n_s_segments);
   Py_VISIT(traverse_module_state->__pyx_n_s_self);
@@ -3579,7 +3579,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_remaining_time __pyx_mstate_global->__pyx_n_s_remaining_time
 #define __pyx_n_s_resolution __pyx_mstate_global->__pyx_n_s_resolution
 #define __pyx_n_s_resolution_ps __pyx_mstate_global->__pyx_n_s_resolution_ps
-#define __pyx_n_s_run_time_sec __pyx_mstate_global->__pyx_n_s_run_time_sec
+#define __pyx_n_s_runtime_sec __pyx_mstate_global->__pyx_n_s_runtime_sec
 #define __pyx_kp_u_sec __pyx_mstate_global->__pyx_kp_u_sec
 #define __pyx_n_s_segments __pyx_mstate_global->__pyx_n_s_segments
 #define __pyx_n_s_self __pyx_mstate_global->__pyx_n_s_self
@@ -8185,7 +8185,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_2t3_to_histogram(CYTHON
  *             # That's a very reasonable assumption, but it's possible to violate it!
  *             if true_nsync > window_ends_nsync[current_hist_idx]:             # <<<<<<<<<<<<<<
  *                 if current_hist_idx == len(window_ends_nsync) - 1:
- *                     return histogrammers
+ *                     break
  */
       __pyx_t_7 = __Pyx_PyObject_GetItem(__pyx_v_window_ends_nsync, __pyx_v_current_hist_idx); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
@@ -8199,7 +8199,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_2t3_to_histogram(CYTHON
  *             # That's a very reasonable assumption, but it's possible to violate it!
  *             if true_nsync > window_ends_nsync[current_hist_idx]:
  *                 if current_hist_idx == len(window_ends_nsync) - 1:             # <<<<<<<<<<<<<<
- *                     return histogrammers
+ *                     break
  *                 current_hist_idx += 1
  */
         __pyx_t_18 = __Pyx_PyList_GET_SIZE(__pyx_v_window_ends_nsync); if (unlikely(__pyx_t_18 == ((Py_ssize_t)-1))) __PYX_ERR(0, 207, __pyx_L1_error)
@@ -8214,28 +8214,24 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_2t3_to_histogram(CYTHON
           /* "ptu_decoder/stream_decoder.pyx":208
  *             if true_nsync > window_ends_nsync[current_hist_idx]:
  *                 if current_hist_idx == len(window_ends_nsync) - 1:
- *                     return histogrammers             # <<<<<<<<<<<<<<
+ *                     break             # <<<<<<<<<<<<<<
  *                 current_hist_idx += 1
  * 
  */
-          __Pyx_XDECREF(__pyx_r);
-          __Pyx_INCREF(__pyx_v_histogrammers);
-          __pyx_r = __pyx_v_histogrammers;
-          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          goto __pyx_L0;
+          goto __pyx_L34_break;
 
           /* "ptu_decoder/stream_decoder.pyx":207
  *             # That's a very reasonable assumption, but it's possible to violate it!
  *             if true_nsync > window_ends_nsync[current_hist_idx]:
  *                 if current_hist_idx == len(window_ends_nsync) - 1:             # <<<<<<<<<<<<<<
- *                     return histogrammers
+ *                     break
  *                 current_hist_idx += 1
  */
         }
 
         /* "ptu_decoder/stream_decoder.pyx":209
  *                 if current_hist_idx == len(window_ends_nsync) - 1:
- *                     return histogrammers
+ *                     break
  *                 current_hist_idx += 1             # <<<<<<<<<<<<<<
  * 
  *             histogrammers[current_hist_idx]._click(dtime)
@@ -8250,7 +8246,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_2t3_to_histogram(CYTHON
  *             # That's a very reasonable assumption, but it's possible to violate it!
  *             if true_nsync > window_ends_nsync[current_hist_idx]:             # <<<<<<<<<<<<<<
  *                 if current_hist_idx == len(window_ends_nsync) - 1:
- *                     return histogrammers
+ *                     break
  */
       }
 
@@ -8302,6 +8298,11 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_2t3_to_histogram(CYTHON
  */
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    goto __pyx_L39_for_end;
+    __pyx_L34_break:;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    goto __pyx_L39_for_end;
+    __pyx_L39_for_end:;
   }
   __pyx_L31_break:;
 
@@ -8964,7 +8965,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_6count
  *         def __get__(self):
  *             return [self.counts_arr[i] for i in range(self.array_size) if (self.min_bin <= i) and (i <= self.max_bin)]             # <<<<<<<<<<<<<<
  * 
- *     property run_time_sec:
+ *     property runtime_sec:
  */
   __Pyx_XDECREF(__pyx_r);
   { /* enter inner scope */
@@ -9017,28 +9018,28 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_6count
 
 /* "ptu_decoder/stream_decoder.pyx":272
  * 
- *     property run_time_sec:
+ *     property runtime_sec:
  *         def __get__(self):             # <<<<<<<<<<<<<<
  *             return self.true_nsync / self.sync_rate_Hz
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_time_sec_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_time_sec_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_14T3Histogrammer_11runtime_sec_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_14T3Histogrammer_11runtime_sec_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_time_sec___get__(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *)__pyx_v_self));
+  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_11runtime_sec___get__(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_time_sec___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self) {
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_11runtime_sec___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -9048,7 +9049,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_
   __Pyx_RefNannySetupContext("__get__", 1);
 
   /* "ptu_decoder/stream_decoder.pyx":273
- *     property run_time_sec:
+ *     property runtime_sec:
  *         def __get__(self):
  *             return self.true_nsync / self.sync_rate_Hz             # <<<<<<<<<<<<<<
  * 
@@ -9067,7 +9068,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_
 
   /* "ptu_decoder/stream_decoder.pyx":272
  * 
- *     property run_time_sec:
+ *     property runtime_sec:
  *         def __get__(self):             # <<<<<<<<<<<<<<
  *             return self.true_nsync / self.sync_rate_Hz
  * 
@@ -9076,7 +9077,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ptu_decoder.stream_decoder.T3Histogrammer.run_time_sec.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ptu_decoder.stream_decoder.T3Histogrammer.runtime_sec.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9137,7 +9138,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_10coun
  *             cdef int i
  *             for i in range(self.array_size):             # <<<<<<<<<<<<<<
  *                 total += self.counts_arr[i]
- *             return total / self.run_time_sec
+ *             return total / self.runtime_sec
  */
   __pyx_t_1 = __pyx_v_self->array_size;
   __pyx_t_2 = __pyx_t_1;
@@ -9148,7 +9149,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_10coun
  *             cdef int i
  *             for i in range(self.array_size):
  *                 total += self.counts_arr[i]             # <<<<<<<<<<<<<<
- *             return total / self.run_time_sec
+ *             return total / self.runtime_sec
  * 
  */
     __pyx_v_total = (__pyx_v_total + (__pyx_v_self->counts_arr[__pyx_v_i]));
@@ -9157,14 +9158,14 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_10coun
   /* "ptu_decoder/stream_decoder.pyx":281
  *             for i in range(self.array_size):
  *                 total += self.counts_arr[i]
- *             return total / self.run_time_sec             # <<<<<<<<<<<<<<
+ *             return total / self.runtime_sec             # <<<<<<<<<<<<<<
  * 
  *     def click(self, uint32_t record):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_total); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_run_time_sec); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_runtime_sec); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -9196,7 +9197,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_10coun
 }
 
 /* "ptu_decoder/stream_decoder.pyx":283
- *             return total / self.run_time_sec
+ *             return total / self.runtime_sec
  * 
  *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
  *         cdef uint32_t channel = (record & 0xF0000000)
@@ -9505,7 +9506,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_2click
   __pyx_L3:;
 
   /* "ptu_decoder/stream_decoder.pyx":283
- *             return total / self.run_time_sec
+ *             return total / self.runtime_sec
  * 
  *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
  *         cdef uint32_t channel = (record & 0xF0000000)
@@ -13150,8 +13151,8 @@ static PyObject *__pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_c
   return __pyx_pw_11ptu_decoder_14stream_decoder_14T3Histogrammer_6counts_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_run_time_sec(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_11ptu_decoder_14stream_decoder_14T3Histogrammer_12run_time_sec_1__get__(o);
+static PyObject *__pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_runtime_sec(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_11ptu_decoder_14stream_decoder_14T3Histogrammer_11runtime_sec_1__get__(o);
 }
 
 static PyObject *__pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_count_rate(PyObject *o, CYTHON_UNUSED void *x) {
@@ -13281,7 +13282,7 @@ static PyMethodDef __pyx_methods_11ptu_decoder_14stream_decoder_T3Histogrammer[]
 static struct PyGetSetDef __pyx_getsets_11ptu_decoder_14stream_decoder_T3Histogrammer[] = {
   {(char *)"times_ns", __pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_times_ns, 0, (char *)0, 0},
   {(char *)"counts", __pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_counts, 0, (char *)0, 0},
-  {(char *)"run_time_sec", __pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_run_time_sec, 0, (char *)0, 0},
+  {(char *)"runtime_sec", __pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_runtime_sec, 0, (char *)0, 0},
   {(char *)"count_rate", __pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_count_rate, 0, (char *)0, 0},
   {(char *)"bin_size_ns", __pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_bin_size_ns, __pyx_setprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_bin_size_ns, (char *)0, 0},
   {(char *)"min_bin", __pyx_getprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_min_bin, __pyx_setprop_11ptu_decoder_14stream_decoder_14T3Histogrammer_min_bin, (char *)0, 0},
@@ -13717,7 +13718,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_remaining_time, __pyx_k_remaining_time, sizeof(__pyx_k_remaining_time), 0, 0, 1, 1},
     {&__pyx_n_s_resolution, __pyx_k_resolution, sizeof(__pyx_k_resolution), 0, 0, 1, 1},
     {&__pyx_n_s_resolution_ps, __pyx_k_resolution_ps, sizeof(__pyx_k_resolution_ps), 0, 0, 1, 1},
-    {&__pyx_n_s_run_time_sec, __pyx_k_run_time_sec, sizeof(__pyx_k_run_time_sec), 0, 0, 1, 1},
+    {&__pyx_n_s_runtime_sec, __pyx_k_runtime_sec, sizeof(__pyx_k_runtime_sec), 0, 0, 1, 1},
     {&__pyx_kp_u_sec, __pyx_k_sec, sizeof(__pyx_k_sec), 0, 1, 0, 0},
     {&__pyx_n_s_segments, __pyx_k_segments, sizeof(__pyx_k_segments), 0, 0, 1, 1},
     {&__pyx_n_s_self, __pyx_k_self, sizeof(__pyx_k_self), 0, 0, 1, 1},
@@ -13931,7 +13932,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(5, 0, 0, 33, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_ptu_decoder_stream_decoder_p, __pyx_n_s_t3_to_histogram, 121, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 121, __pyx_L1_error)
 
   /* "ptu_decoder/stream_decoder.pyx":283
- *             return total / self.run_time_sec
+ *             return total / self.runtime_sec
  * 
  *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
  *         cdef uint32_t channel = (record & 0xF0000000)
@@ -14546,7 +14547,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "ptu_decoder/stream_decoder.pyx":283
- *             return total / self.run_time_sec
+ *             return total / self.runtime_sec
  * 
  *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
  *         cdef uint32_t channel = (record & 0xF0000000)

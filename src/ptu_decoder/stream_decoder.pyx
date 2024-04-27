@@ -205,7 +205,7 @@ def t3_to_histogram(
             # That's a very reasonable assumption, but it's possible to violate it!
             if true_nsync > window_ends_nsync[current_hist_idx]:
                 if current_hist_idx == len(window_ends_nsync) - 1:
-                    return histogrammers
+                    break
                 current_hist_idx += 1
             
             histogrammers[current_hist_idx]._click(dtime)
