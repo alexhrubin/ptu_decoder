@@ -389,6 +389,16 @@ cdef class T2Streamer:
         self.overflow_correction = 0
         self.resolution_ns = resolution_ps / 1_000
 
+    def clear(self):
+        # reinitialize array with zeros
+        memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))
+        memset(self.ch1_photon_timestamps, 0, self.ch1_max_timestamps * sizeof(uint32_t))
+        self.ch0_timestamp_index = 0
+        self.ch1_timestamp_index = 0
+        self.ch0_max_timestamps = 1_000_000
+        self.ch1_max_timestamps = 1_000_000
+        self.overflow_correction = 0
+
     def click(self, uint32_t record):
         cdef unsigned int time, channel
         cdef long long true_time

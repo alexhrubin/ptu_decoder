@@ -2406,7 +2406,7 @@ static const char __pyx_k_rb[] = "rb";
 static const char __pyx_k_we[] = "we";
 static const char __pyx_k_ws[] = "ws";
 static const char __pyx_k__14[] = "*";
-static const char __pyx_k__37[] = "?";
+static const char __pyx_k__38[] = "?";
 static const char __pyx_k_i_2[] = "<i";
 static const char __pyx_k_i_3[] = "i";
 static const char __pyx_k_sec[] = " sec)";
@@ -2539,6 +2539,7 @@ static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_t3_to_histogram[] = "t3_to_histogram";
 static const char __pyx_k_window_ends_sec[] = "window_ends_sec";
 static const char __pyx_k_T2Streamer_batch[] = "T2Streamer.batch";
+static const char __pyx_k_T2Streamer_clear[] = "T2Streamer.clear";
 static const char __pyx_k_T2Streamer_click[] = "T2Streamer.click";
 static const char __pyx_k_current_hist_idx[] = "current_hist_idx";
 static const char __pyx_k_t2_to_timestamps[] = "t2_to_timestamps";
@@ -2607,16 +2608,17 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_10__re
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_14T3Histogrammer_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T3Histogrammer *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_4t2_to_timestamps(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_path); /* proto */
 static int __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer___cinit__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, PyObject *__pyx_v_resolution_ps); /* proto */
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, uint32_t __pyx_v_record); /* proto */
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, PyObject *__pyx_v_records); /* proto */
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2clear(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4click(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, uint32_t __pyx_v_record); /* proto */
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_6batch(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, PyObject *__pyx_v_records); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch0_times_ns___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch1_times_ns___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_9ch0_count___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_9ch1_count___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_13resolution_ns___get__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
 static int __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_13resolution_ns_2__set__(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_11ptu_decoder_14stream_decoder_T3Histogrammer(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_11ptu_decoder_14stream_decoder_T2Streamer(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 /* #### Code section: late_includes ### */
@@ -2693,6 +2695,7 @@ typedef struct {
   PyObject *__pyx_n_s_T2Streamer___reduce_cython;
   PyObject *__pyx_n_s_T2Streamer___setstate_cython;
   PyObject *__pyx_n_s_T2Streamer_batch;
+  PyObject *__pyx_n_s_T2Streamer_clear;
   PyObject *__pyx_n_s_T2Streamer_click;
   PyObject *__pyx_n_s_T3Histogrammer;
   PyObject *__pyx_n_s_T3Histogrammer___reduce_cython;
@@ -2710,7 +2713,7 @@ typedef struct {
   PyObject *__pyx_kp_u_Warning_some_measurement_time_le;
   PyObject *__pyx_n_s__14;
   PyObject *__pyx_kp_u__3;
-  PyObject *__pyx_n_s__37;
+  PyObject *__pyx_n_s__38;
   PyObject *__pyx_kp_u__4;
   PyObject *__pyx_kp_u__5;
   PyObject *__pyx_n_s_asyncio_coroutines;
@@ -2875,7 +2878,7 @@ typedef struct {
   PyObject *__pyx_tuple__25;
   PyObject *__pyx_tuple__28;
   PyObject *__pyx_tuple__30;
-  PyObject *__pyx_tuple__32;
+  PyObject *__pyx_tuple__33;
   PyObject *__pyx_codeobj__16;
   PyObject *__pyx_codeobj__18;
   PyObject *__pyx_codeobj__20;
@@ -2885,10 +2888,11 @@ typedef struct {
   PyObject *__pyx_codeobj__27;
   PyObject *__pyx_codeobj__29;
   PyObject *__pyx_codeobj__31;
-  PyObject *__pyx_codeobj__33;
+  PyObject *__pyx_codeobj__32;
   PyObject *__pyx_codeobj__34;
   PyObject *__pyx_codeobj__35;
   PyObject *__pyx_codeobj__36;
+  PyObject *__pyx_codeobj__37;
 } __pyx_mstate;
 
 #if CYTHON_USE_MODULE_STATE
@@ -2964,6 +2968,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_T2Streamer___reduce_cython);
   Py_CLEAR(clear_module_state->__pyx_n_s_T2Streamer___setstate_cython);
   Py_CLEAR(clear_module_state->__pyx_n_s_T2Streamer_batch);
+  Py_CLEAR(clear_module_state->__pyx_n_s_T2Streamer_clear);
   Py_CLEAR(clear_module_state->__pyx_n_s_T2Streamer_click);
   Py_CLEAR(clear_module_state->__pyx_n_s_T3Histogrammer);
   Py_CLEAR(clear_module_state->__pyx_n_s_T3Histogrammer___reduce_cython);
@@ -2981,7 +2986,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_u_Warning_some_measurement_time_le);
   Py_CLEAR(clear_module_state->__pyx_n_s__14);
   Py_CLEAR(clear_module_state->__pyx_kp_u__3);
-  Py_CLEAR(clear_module_state->__pyx_n_s__37);
+  Py_CLEAR(clear_module_state->__pyx_n_s__38);
   Py_CLEAR(clear_module_state->__pyx_kp_u__4);
   Py_CLEAR(clear_module_state->__pyx_kp_u__5);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
@@ -3146,7 +3151,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_tuple__25);
   Py_CLEAR(clear_module_state->__pyx_tuple__28);
   Py_CLEAR(clear_module_state->__pyx_tuple__30);
-  Py_CLEAR(clear_module_state->__pyx_tuple__32);
+  Py_CLEAR(clear_module_state->__pyx_tuple__33);
   Py_CLEAR(clear_module_state->__pyx_codeobj__16);
   Py_CLEAR(clear_module_state->__pyx_codeobj__18);
   Py_CLEAR(clear_module_state->__pyx_codeobj__20);
@@ -3156,10 +3161,11 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_codeobj__27);
   Py_CLEAR(clear_module_state->__pyx_codeobj__29);
   Py_CLEAR(clear_module_state->__pyx_codeobj__31);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__33);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__32);
   Py_CLEAR(clear_module_state->__pyx_codeobj__34);
   Py_CLEAR(clear_module_state->__pyx_codeobj__35);
   Py_CLEAR(clear_module_state->__pyx_codeobj__36);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__37);
   return 0;
 }
 #endif
@@ -3213,6 +3219,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_T2Streamer___reduce_cython);
   Py_VISIT(traverse_module_state->__pyx_n_s_T2Streamer___setstate_cython);
   Py_VISIT(traverse_module_state->__pyx_n_s_T2Streamer_batch);
+  Py_VISIT(traverse_module_state->__pyx_n_s_T2Streamer_clear);
   Py_VISIT(traverse_module_state->__pyx_n_s_T2Streamer_click);
   Py_VISIT(traverse_module_state->__pyx_n_s_T3Histogrammer);
   Py_VISIT(traverse_module_state->__pyx_n_s_T3Histogrammer___reduce_cython);
@@ -3230,7 +3237,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_u_Warning_some_measurement_time_le);
   Py_VISIT(traverse_module_state->__pyx_n_s__14);
   Py_VISIT(traverse_module_state->__pyx_kp_u__3);
-  Py_VISIT(traverse_module_state->__pyx_n_s__37);
+  Py_VISIT(traverse_module_state->__pyx_n_s__38);
   Py_VISIT(traverse_module_state->__pyx_kp_u__4);
   Py_VISIT(traverse_module_state->__pyx_kp_u__5);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
@@ -3395,7 +3402,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_tuple__25);
   Py_VISIT(traverse_module_state->__pyx_tuple__28);
   Py_VISIT(traverse_module_state->__pyx_tuple__30);
-  Py_VISIT(traverse_module_state->__pyx_tuple__32);
+  Py_VISIT(traverse_module_state->__pyx_tuple__33);
   Py_VISIT(traverse_module_state->__pyx_codeobj__16);
   Py_VISIT(traverse_module_state->__pyx_codeobj__18);
   Py_VISIT(traverse_module_state->__pyx_codeobj__20);
@@ -3405,10 +3412,11 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_codeobj__27);
   Py_VISIT(traverse_module_state->__pyx_codeobj__29);
   Py_VISIT(traverse_module_state->__pyx_codeobj__31);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__33);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__32);
   Py_VISIT(traverse_module_state->__pyx_codeobj__34);
   Py_VISIT(traverse_module_state->__pyx_codeobj__35);
   Py_VISIT(traverse_module_state->__pyx_codeobj__36);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__37);
   return 0;
 }
 #endif
@@ -3484,6 +3492,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_T2Streamer___reduce_cython __pyx_mstate_global->__pyx_n_s_T2Streamer___reduce_cython
 #define __pyx_n_s_T2Streamer___setstate_cython __pyx_mstate_global->__pyx_n_s_T2Streamer___setstate_cython
 #define __pyx_n_s_T2Streamer_batch __pyx_mstate_global->__pyx_n_s_T2Streamer_batch
+#define __pyx_n_s_T2Streamer_clear __pyx_mstate_global->__pyx_n_s_T2Streamer_clear
 #define __pyx_n_s_T2Streamer_click __pyx_mstate_global->__pyx_n_s_T2Streamer_click
 #define __pyx_n_s_T3Histogrammer __pyx_mstate_global->__pyx_n_s_T3Histogrammer
 #define __pyx_n_s_T3Histogrammer___reduce_cython __pyx_mstate_global->__pyx_n_s_T3Histogrammer___reduce_cython
@@ -3501,7 +3510,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_u_Warning_some_measurement_time_le __pyx_mstate_global->__pyx_kp_u_Warning_some_measurement_time_le
 #define __pyx_n_s__14 __pyx_mstate_global->__pyx_n_s__14
 #define __pyx_kp_u__3 __pyx_mstate_global->__pyx_kp_u__3
-#define __pyx_n_s__37 __pyx_mstate_global->__pyx_n_s__37
+#define __pyx_n_s__38 __pyx_mstate_global->__pyx_n_s__38
 #define __pyx_kp_u__4 __pyx_mstate_global->__pyx_kp_u__4
 #define __pyx_kp_u__5 __pyx_mstate_global->__pyx_kp_u__5
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
@@ -3666,7 +3675,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_tuple__25 __pyx_mstate_global->__pyx_tuple__25
 #define __pyx_tuple__28 __pyx_mstate_global->__pyx_tuple__28
 #define __pyx_tuple__30 __pyx_mstate_global->__pyx_tuple__30
-#define __pyx_tuple__32 __pyx_mstate_global->__pyx_tuple__32
+#define __pyx_tuple__33 __pyx_mstate_global->__pyx_tuple__33
 #define __pyx_codeobj__16 __pyx_mstate_global->__pyx_codeobj__16
 #define __pyx_codeobj__18 __pyx_mstate_global->__pyx_codeobj__18
 #define __pyx_codeobj__20 __pyx_mstate_global->__pyx_codeobj__20
@@ -3676,10 +3685,11 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_codeobj__27 __pyx_mstate_global->__pyx_codeobj__27
 #define __pyx_codeobj__29 __pyx_mstate_global->__pyx_codeobj__29
 #define __pyx_codeobj__31 __pyx_mstate_global->__pyx_codeobj__31
-#define __pyx_codeobj__33 __pyx_mstate_global->__pyx_codeobj__33
+#define __pyx_codeobj__32 __pyx_mstate_global->__pyx_codeobj__32
 #define __pyx_codeobj__34 __pyx_mstate_global->__pyx_codeobj__34
 #define __pyx_codeobj__35 __pyx_mstate_global->__pyx_codeobj__35
 #define __pyx_codeobj__36 __pyx_mstate_global->__pyx_codeobj__36
+#define __pyx_codeobj__37 __pyx_mstate_global->__pyx_codeobj__37
 /* #### Code section: module_code ### */
 
 /* "ptu_decoder/stream_decoder.pyx":18
@@ -11775,7 +11785,7 @@ static int __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer___cinit__(struct
  *         self.overflow_correction = 0
  *         self.resolution_ns = resolution_ps / 1_000             # <<<<<<<<<<<<<<
  * 
- *     def click(self, uint32_t record):
+ *     def clear(self):
  */
   __pyx_t_1 = __Pyx_PyInt_TrueDivideObjC(__pyx_v_resolution_ps, __pyx_int_1000, 0x3E8, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -11806,21 +11816,153 @@ static int __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer___cinit__(struct
 /* "ptu_decoder/stream_decoder.pyx":392
  *         self.resolution_ns = resolution_ps / 1_000
  * 
- *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
- *         cdef unsigned int time, channel
- *         cdef long long true_time
+ *     def clear(self):             # <<<<<<<<<<<<<<
+ *         # reinitialize array with zeros
+ *         memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3click(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3clear(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_3click = {"click", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3click, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3click(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_3clear = {"clear", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3clear, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3clear(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("clear (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("clear", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "clear", 0))) return NULL;
+  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2clear(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2clear(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("clear", 1);
+
+  /* "ptu_decoder/stream_decoder.pyx":394
+ *     def clear(self):
+ *         # reinitialize array with zeros
+ *         memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))             # <<<<<<<<<<<<<<
+ *         memset(self.ch1_photon_timestamps, 0, self.ch1_max_timestamps * sizeof(uint32_t))
+ *         self.ch0_timestamp_index = 0
+ */
+  (void)(memset(__pyx_v_self->ch0_photon_timestamps, 0, (__pyx_v_self->ch0_max_timestamps * (sizeof(uint32_t)))));
+
+  /* "ptu_decoder/stream_decoder.pyx":395
+ *         # reinitialize array with zeros
+ *         memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))
+ *         memset(self.ch1_photon_timestamps, 0, self.ch1_max_timestamps * sizeof(uint32_t))             # <<<<<<<<<<<<<<
+ *         self.ch0_timestamp_index = 0
+ *         self.ch1_timestamp_index = 0
+ */
+  (void)(memset(__pyx_v_self->ch1_photon_timestamps, 0, (__pyx_v_self->ch1_max_timestamps * (sizeof(uint32_t)))));
+
+  /* "ptu_decoder/stream_decoder.pyx":396
+ *         memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))
+ *         memset(self.ch1_photon_timestamps, 0, self.ch1_max_timestamps * sizeof(uint32_t))
+ *         self.ch0_timestamp_index = 0             # <<<<<<<<<<<<<<
+ *         self.ch1_timestamp_index = 0
+ *         self.ch0_max_timestamps = 1_000_000
+ */
+  __pyx_v_self->ch0_timestamp_index = 0;
+
+  /* "ptu_decoder/stream_decoder.pyx":397
+ *         memset(self.ch1_photon_timestamps, 0, self.ch1_max_timestamps * sizeof(uint32_t))
+ *         self.ch0_timestamp_index = 0
+ *         self.ch1_timestamp_index = 0             # <<<<<<<<<<<<<<
+ *         self.ch0_max_timestamps = 1_000_000
+ *         self.ch1_max_timestamps = 1_000_000
+ */
+  __pyx_v_self->ch1_timestamp_index = 0;
+
+  /* "ptu_decoder/stream_decoder.pyx":398
+ *         self.ch0_timestamp_index = 0
+ *         self.ch1_timestamp_index = 0
+ *         self.ch0_max_timestamps = 1_000_000             # <<<<<<<<<<<<<<
+ *         self.ch1_max_timestamps = 1_000_000
+ *         self.overflow_correction = 0
+ */
+  __pyx_v_self->ch0_max_timestamps = 0xF4240;
+
+  /* "ptu_decoder/stream_decoder.pyx":399
+ *         self.ch1_timestamp_index = 0
+ *         self.ch0_max_timestamps = 1_000_000
+ *         self.ch1_max_timestamps = 1_000_000             # <<<<<<<<<<<<<<
+ *         self.overflow_correction = 0
+ * 
+ */
+  __pyx_v_self->ch1_max_timestamps = 0xF4240;
+
+  /* "ptu_decoder/stream_decoder.pyx":400
+ *         self.ch0_max_timestamps = 1_000_000
+ *         self.ch1_max_timestamps = 1_000_000
+ *         self.overflow_correction = 0             # <<<<<<<<<<<<<<
+ * 
+ *     def click(self, uint32_t record):
+ */
+  __pyx_v_self->overflow_correction = 0;
+
+  /* "ptu_decoder/stream_decoder.pyx":392
+ *         self.resolution_ns = resolution_ps / 1_000
+ * 
+ *     def clear(self):             # <<<<<<<<<<<<<<
+ *         # reinitialize array with zeros
+ *         memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "ptu_decoder/stream_decoder.pyx":402
+ *         self.overflow_correction = 0
+ * 
+ *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
+ *         cdef unsigned int time, channel
+ *         cdef long long true_time
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5click(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_5click = {"click", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5click, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5click(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -11864,23 +12006,23 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 392, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 402, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "click") < 0)) __PYX_ERR(0, 392, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "click") < 0)) __PYX_ERR(0, 402, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_record = __Pyx_PyInt_As_uint32_t(values[0]); if (unlikely((__pyx_v_record == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 392, __pyx_L3_error)
+    __pyx_v_record = __Pyx_PyInt_As_uint32_t(values[0]); if (unlikely((__pyx_v_record == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 402, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("click", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 392, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("click", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 402, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -11894,7 +12036,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self), __pyx_v_record);
+  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4click(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self), __pyx_v_record);
 
   /* function exit code */
   {
@@ -11907,7 +12049,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, uint32_t __pyx_v_record) {
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4click(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, uint32_t __pyx_v_record) {
   unsigned int __pyx_v_time;
   unsigned int __pyx_v_channel;
   PY_LONG_LONG __pyx_v_true_time;
@@ -11925,7 +12067,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("click", 1);
 
-  /* "ptu_decoder/stream_decoder.pyx":397
+  /* "ptu_decoder/stream_decoder.pyx":407
  * 
  *         # Manually extract time and channel from the 32-bit integer
  *         time = record & 0x0FFFFFFF  # Extracting the first 28 bits             # <<<<<<<<<<<<<<
@@ -11934,26 +12076,26 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
   __pyx_v_time = (__pyx_v_record & 0x0FFFFFFF);
 
-  /* "ptu_decoder/stream_decoder.pyx":398
+  /* "ptu_decoder/stream_decoder.pyx":408
  *         # Manually extract time and channel from the 32-bit integer
  *         time = record & 0x0FFFFFFF  # Extracting the first 28 bits
  *         channel = (record & 0xF0000000) >> 28  # Extracting the last 4 bits             # <<<<<<<<<<<<<<
  * 
  *         if channel == 0xF:
  */
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_v_record); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 398, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_v_record); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 408, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_And(__pyx_t_1, __pyx_int_4026531840); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 398, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_And(__pyx_t_1, __pyx_int_4026531840); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 408, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_RshiftObjC(__pyx_t_2, __pyx_int_28, 28, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 398, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_RshiftObjC(__pyx_t_2, __pyx_int_28, 28, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 408, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 398, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 408, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_channel = __pyx_t_3;
 
-  /* "ptu_decoder/stream_decoder.pyx":400
+  /* "ptu_decoder/stream_decoder.pyx":410
  *         channel = (record & 0xF0000000) >> 28  # Extracting the last 4 bits
  * 
  *         if channel == 0xF:             # <<<<<<<<<<<<<<
@@ -11963,7 +12105,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
   __pyx_t_4 = (__pyx_v_channel == 0xF);
   if (__pyx_t_4) {
 
-    /* "ptu_decoder/stream_decoder.pyx":401
+    /* "ptu_decoder/stream_decoder.pyx":411
  * 
  *         if channel == 0xF:
  *             markers = time & 0xF             # <<<<<<<<<<<<<<
@@ -11972,7 +12114,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
     __pyx_v_markers = (__pyx_v_time & 0xF);
 
-    /* "ptu_decoder/stream_decoder.pyx":402
+    /* "ptu_decoder/stream_decoder.pyx":412
  *         if channel == 0xF:
  *             markers = time & 0xF
  *             if markers == 0:             # <<<<<<<<<<<<<<
@@ -11982,7 +12124,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
     __pyx_t_4 = (__pyx_v_markers == 0);
     if (__pyx_t_4) {
 
-      /* "ptu_decoder/stream_decoder.pyx":403
+      /* "ptu_decoder/stream_decoder.pyx":413
  *             markers = time & 0xF
  *             if markers == 0:
  *                 self.overflow_correction += TIME_OVERFLOW  # wraparound             # <<<<<<<<<<<<<<
@@ -11991,7 +12133,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
       __pyx_v_self->overflow_correction = (__pyx_v_self->overflow_correction + __pyx_v_11ptu_decoder_14stream_decoder_TIME_OVERFLOW);
 
-      /* "ptu_decoder/stream_decoder.pyx":402
+      /* "ptu_decoder/stream_decoder.pyx":412
  *         if channel == 0xF:
  *             markers = time & 0xF
  *             if markers == 0:             # <<<<<<<<<<<<<<
@@ -12000,7 +12142,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
     }
 
-    /* "ptu_decoder/stream_decoder.pyx":404
+    /* "ptu_decoder/stream_decoder.pyx":414
  *             if markers == 0:
  *                 self.overflow_correction += TIME_OVERFLOW  # wraparound
  *             return None             # <<<<<<<<<<<<<<
@@ -12011,7 +12153,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "ptu_decoder/stream_decoder.pyx":400
+    /* "ptu_decoder/stream_decoder.pyx":410
  *         channel = (record & 0xF0000000) >> 28  # Extracting the last 4 bits
  * 
  *         if channel == 0xF:             # <<<<<<<<<<<<<<
@@ -12020,7 +12162,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
   }
 
-  /* "ptu_decoder/stream_decoder.pyx":406
+  /* "ptu_decoder/stream_decoder.pyx":416
  *             return None
  *         else:
  *             true_time = self.overflow_correction + time             # <<<<<<<<<<<<<<
@@ -12030,7 +12172,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
   /*else*/ {
     __pyx_v_true_time = (__pyx_v_self->overflow_correction + __pyx_v_time);
 
-    /* "ptu_decoder/stream_decoder.pyx":407
+    /* "ptu_decoder/stream_decoder.pyx":417
  *         else:
  *             true_time = self.overflow_correction + time
  *             if channel == 0:             # <<<<<<<<<<<<<<
@@ -12040,7 +12182,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
     switch (__pyx_v_channel) {
       case 0:
 
-      /* "ptu_decoder/stream_decoder.pyx":408
+      /* "ptu_decoder/stream_decoder.pyx":418
  *             true_time = self.overflow_correction + time
  *             if channel == 0:
  *                 if self.ch0_timestamp_index == self.ch0_max_timestamps - 1:             # <<<<<<<<<<<<<<
@@ -12050,45 +12192,45 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
       __pyx_t_4 = (__pyx_v_self->ch0_timestamp_index == (__pyx_v_self->ch0_max_timestamps - 1));
       if (__pyx_t_4) {
 
-        /* "ptu_decoder/stream_decoder.pyx":409
+        /* "ptu_decoder/stream_decoder.pyx":419
  *             if channel == 0:
  *                 if self.ch0_timestamp_index == self.ch0_max_timestamps - 1:
  *                     new_size = int(1.1 * self.ch0_max_timestamps)             # <<<<<<<<<<<<<<
  *                     self.ch0_photon_timestamps = <long long *>realloc(self.ch0_photon_timestamps, new_size * sizeof(long long))
  *                     self.ch0_max_timestamps = new_size
  */
-        __pyx_t_1 = __Pyx_PyInt_FromDouble((1.1 * __pyx_v_self->ch0_max_timestamps)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 409, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_FromDouble((1.1 * __pyx_v_self->ch0_max_timestamps)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 419, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_v_new_size = __pyx_t_1;
         __pyx_t_1 = 0;
 
-        /* "ptu_decoder/stream_decoder.pyx":410
+        /* "ptu_decoder/stream_decoder.pyx":420
  *                 if self.ch0_timestamp_index == self.ch0_max_timestamps - 1:
  *                     new_size = int(1.1 * self.ch0_max_timestamps)
  *                     self.ch0_photon_timestamps = <long long *>realloc(self.ch0_photon_timestamps, new_size * sizeof(long long))             # <<<<<<<<<<<<<<
  *                     self.ch0_max_timestamps = new_size
  * 
  */
-        __pyx_t_1 = __Pyx_PyInt_FromSize_t((sizeof(PY_LONG_LONG))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 410, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_FromSize_t((sizeof(PY_LONG_LONG))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 420, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_2 = PyNumber_Multiply(__pyx_v_new_size, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 410, __pyx_L1_error)
+        __pyx_t_2 = PyNumber_Multiply(__pyx_v_new_size, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 420, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 410, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 420, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_v_self->ch0_photon_timestamps = ((PY_LONG_LONG *)realloc(__pyx_v_self->ch0_photon_timestamps, __pyx_t_5));
 
-        /* "ptu_decoder/stream_decoder.pyx":411
+        /* "ptu_decoder/stream_decoder.pyx":421
  *                     new_size = int(1.1 * self.ch0_max_timestamps)
  *                     self.ch0_photon_timestamps = <long long *>realloc(self.ch0_photon_timestamps, new_size * sizeof(long long))
  *                     self.ch0_max_timestamps = new_size             # <<<<<<<<<<<<<<
  * 
  *                 self.ch0_photon_timestamps[self.ch0_timestamp_index] = true_time
  */
-        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_v_new_size); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 411, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_v_new_size); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 421, __pyx_L1_error)
         __pyx_v_self->ch0_max_timestamps = __pyx_t_5;
 
-        /* "ptu_decoder/stream_decoder.pyx":408
+        /* "ptu_decoder/stream_decoder.pyx":418
  *             true_time = self.overflow_correction + time
  *             if channel == 0:
  *                 if self.ch0_timestamp_index == self.ch0_max_timestamps - 1:             # <<<<<<<<<<<<<<
@@ -12097,7 +12239,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
       }
 
-      /* "ptu_decoder/stream_decoder.pyx":413
+      /* "ptu_decoder/stream_decoder.pyx":423
  *                     self.ch0_max_timestamps = new_size
  * 
  *                 self.ch0_photon_timestamps[self.ch0_timestamp_index] = true_time             # <<<<<<<<<<<<<<
@@ -12106,7 +12248,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
       (__pyx_v_self->ch0_photon_timestamps[__pyx_v_self->ch0_timestamp_index]) = __pyx_v_true_time;
 
-      /* "ptu_decoder/stream_decoder.pyx":414
+      /* "ptu_decoder/stream_decoder.pyx":424
  * 
  *                 self.ch0_photon_timestamps[self.ch0_timestamp_index] = true_time
  *                 self.ch0_timestamp_index += 1             # <<<<<<<<<<<<<<
@@ -12115,7 +12257,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
       __pyx_v_self->ch0_timestamp_index = (__pyx_v_self->ch0_timestamp_index + 1);
 
-      /* "ptu_decoder/stream_decoder.pyx":407
+      /* "ptu_decoder/stream_decoder.pyx":417
  *         else:
  *             true_time = self.overflow_correction + time
  *             if channel == 0:             # <<<<<<<<<<<<<<
@@ -12125,7 +12267,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
       break;
       case 1:
 
-      /* "ptu_decoder/stream_decoder.pyx":416
+      /* "ptu_decoder/stream_decoder.pyx":426
  *                 self.ch0_timestamp_index += 1
  *             elif channel == 1:
  *                 if self.ch1_timestamp_index == self.ch1_max_timestamps - 1:             # <<<<<<<<<<<<<<
@@ -12135,45 +12277,45 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
       __pyx_t_4 = (__pyx_v_self->ch1_timestamp_index == (__pyx_v_self->ch1_max_timestamps - 1));
       if (__pyx_t_4) {
 
-        /* "ptu_decoder/stream_decoder.pyx":417
+        /* "ptu_decoder/stream_decoder.pyx":427
  *             elif channel == 1:
  *                 if self.ch1_timestamp_index == self.ch1_max_timestamps - 1:
  *                     new_size = int(1.1 * self.ch1_max_timestamps)             # <<<<<<<<<<<<<<
  *                     self.ch1_photon_timestamps = <long long *>realloc(self.ch1_photon_timestamps, new_size * sizeof(long long))
  *                     self.ch1_max_timestamps = new_size
  */
-        __pyx_t_2 = __Pyx_PyInt_FromDouble((1.1 * __pyx_v_self->ch1_max_timestamps)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 417, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyInt_FromDouble((1.1 * __pyx_v_self->ch1_max_timestamps)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 427, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __pyx_v_new_size = __pyx_t_2;
         __pyx_t_2 = 0;
 
-        /* "ptu_decoder/stream_decoder.pyx":418
+        /* "ptu_decoder/stream_decoder.pyx":428
  *                 if self.ch1_timestamp_index == self.ch1_max_timestamps - 1:
  *                     new_size = int(1.1 * self.ch1_max_timestamps)
  *                     self.ch1_photon_timestamps = <long long *>realloc(self.ch1_photon_timestamps, new_size * sizeof(long long))             # <<<<<<<<<<<<<<
  *                     self.ch1_max_timestamps = new_size
  * 
  */
-        __pyx_t_2 = __Pyx_PyInt_FromSize_t((sizeof(PY_LONG_LONG))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 418, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyInt_FromSize_t((sizeof(PY_LONG_LONG))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 428, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_1 = PyNumber_Multiply(__pyx_v_new_size, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 418, __pyx_L1_error)
+        __pyx_t_1 = PyNumber_Multiply(__pyx_v_new_size, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 428, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 418, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 428, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_self->ch1_photon_timestamps = ((PY_LONG_LONG *)realloc(__pyx_v_self->ch1_photon_timestamps, __pyx_t_5));
 
-        /* "ptu_decoder/stream_decoder.pyx":419
+        /* "ptu_decoder/stream_decoder.pyx":429
  *                     new_size = int(1.1 * self.ch1_max_timestamps)
  *                     self.ch1_photon_timestamps = <long long *>realloc(self.ch1_photon_timestamps, new_size * sizeof(long long))
  *                     self.ch1_max_timestamps = new_size             # <<<<<<<<<<<<<<
  * 
  *                 self.ch1_photon_timestamps[self.ch1_timestamp_index] = true_time
  */
-        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_v_new_size); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 419, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_As_size_t(__pyx_v_new_size); if (unlikely((__pyx_t_5 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 429, __pyx_L1_error)
         __pyx_v_self->ch1_max_timestamps = __pyx_t_5;
 
-        /* "ptu_decoder/stream_decoder.pyx":416
+        /* "ptu_decoder/stream_decoder.pyx":426
  *                 self.ch0_timestamp_index += 1
  *             elif channel == 1:
  *                 if self.ch1_timestamp_index == self.ch1_max_timestamps - 1:             # <<<<<<<<<<<<<<
@@ -12182,7 +12324,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
       }
 
-      /* "ptu_decoder/stream_decoder.pyx":421
+      /* "ptu_decoder/stream_decoder.pyx":431
  *                     self.ch1_max_timestamps = new_size
  * 
  *                 self.ch1_photon_timestamps[self.ch1_timestamp_index] = true_time             # <<<<<<<<<<<<<<
@@ -12191,7 +12333,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
       (__pyx_v_self->ch1_photon_timestamps[__pyx_v_self->ch1_timestamp_index]) = __pyx_v_true_time;
 
-      /* "ptu_decoder/stream_decoder.pyx":422
+      /* "ptu_decoder/stream_decoder.pyx":432
  * 
  *                 self.ch1_photon_timestamps[self.ch1_timestamp_index] = true_time
  *                 self.ch1_timestamp_index += 1             # <<<<<<<<<<<<<<
@@ -12200,7 +12342,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
       __pyx_v_self->ch1_timestamp_index = (__pyx_v_self->ch1_timestamp_index + 1);
 
-      /* "ptu_decoder/stream_decoder.pyx":415
+      /* "ptu_decoder/stream_decoder.pyx":425
  *                 self.ch0_photon_timestamps[self.ch0_timestamp_index] = true_time
  *                 self.ch0_timestamp_index += 1
  *             elif channel == 1:             # <<<<<<<<<<<<<<
@@ -12213,8 +12355,8 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
     }
   }
 
-  /* "ptu_decoder/stream_decoder.pyx":392
- *         self.resolution_ns = resolution_ps / 1_000
+  /* "ptu_decoder/stream_decoder.pyx":402
+ *         self.overflow_correction = 0
  * 
  *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
  *         cdef unsigned int time, channel
@@ -12236,7 +12378,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
   return __pyx_r;
 }
 
-/* "ptu_decoder/stream_decoder.pyx":427
+/* "ptu_decoder/stream_decoder.pyx":437
  *                 pass
  * 
  *     def batch(self, records):             # <<<<<<<<<<<<<<
@@ -12245,15 +12387,15 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_2click(str
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5batch(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7batch(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_5batch = {"batch", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5batch, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5batch(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_7batch = {"batch", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7batch, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7batch(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -12297,12 +12439,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 427, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 437, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "batch") < 0)) __PYX_ERR(0, 427, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "batch") < 0)) __PYX_ERR(0, 437, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -12313,7 +12455,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("batch", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 427, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("batch", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 437, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -12327,7 +12469,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self), __pyx_v_records);
+  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_6batch(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self), __pyx_v_records);
 
   /* function exit code */
   {
@@ -12340,7 +12482,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, PyObject *__pyx_v_records) {
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_6batch(struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, PyObject *__pyx_v_records) {
   PyObject *__pyx_v_record = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -12356,7 +12498,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("batch", 1);
 
-  /* "ptu_decoder/stream_decoder.pyx":428
+  /* "ptu_decoder/stream_decoder.pyx":438
  * 
  *     def batch(self, records):
  *         for record in records:             # <<<<<<<<<<<<<<
@@ -12368,9 +12510,9 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
     __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_records); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 428, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_records); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 428, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 438, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
@@ -12378,28 +12520,28 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
         {
           Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 428, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 438, __pyx_L1_error)
           #endif
           if (__pyx_t_2 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 428, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 438, __pyx_L1_error)
         #else
-        __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 428, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 438, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         {
           Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_1);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 428, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 438, __pyx_L1_error)
           #endif
           if (__pyx_t_2 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 428, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 438, __pyx_L1_error)
         #else
-        __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 428, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 438, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -12409,7 +12551,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 428, __pyx_L1_error)
+          else __PYX_ERR(0, 438, __pyx_L1_error)
         }
         break;
       }
@@ -12418,14 +12560,14 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
     __Pyx_XDECREF_SET(__pyx_v_record, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "ptu_decoder/stream_decoder.pyx":429
+    /* "ptu_decoder/stream_decoder.pyx":439
  *     def batch(self, records):
  *         for record in records:
  *             self.click(record)             # <<<<<<<<<<<<<<
  * 
  *     property ch0_times_ns:
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_click_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 429, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_click_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 439, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     __pyx_t_7 = 0;
@@ -12445,13 +12587,13 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
       PyObject *__pyx_callargs[2] = {__pyx_t_6, __pyx_v_record};
       __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_7, 1+__pyx_t_7);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 429, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 439, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "ptu_decoder/stream_decoder.pyx":428
+    /* "ptu_decoder/stream_decoder.pyx":438
  * 
  *     def batch(self, records):
  *         for record in records:             # <<<<<<<<<<<<<<
@@ -12461,7 +12603,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "ptu_decoder/stream_decoder.pyx":427
+  /* "ptu_decoder/stream_decoder.pyx":437
  *                 pass
  * 
  *     def batch(self, records):             # <<<<<<<<<<<<<<
@@ -12486,7 +12628,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_4batch(str
   return __pyx_r;
 }
 
-/* "ptu_decoder/stream_decoder.pyx":432
+/* "ptu_decoder/stream_decoder.pyx":442
  * 
  *     property ch0_times_ns:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12523,7 +12665,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch0_time
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
 
-  /* "ptu_decoder/stream_decoder.pyx":433
+  /* "ptu_decoder/stream_decoder.pyx":443
  *     property ch0_times_ns:
  *         def __get__(self):
  *             return [self.ch0_photon_timestamps[i] * self.resolution_ns for i in range(self.ch0_timestamp_index)]             # <<<<<<<<<<<<<<
@@ -12532,15 +12674,15 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch0_time
  */
   __Pyx_XDECREF(__pyx_r);
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 433, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_2 = __pyx_v_self->ch0_timestamp_index;
     __pyx_t_3 = __pyx_t_2;
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_8genexpr7__pyx_v_i = __pyx_t_4;
-      __pyx_t_5 = PyFloat_FromDouble(((__pyx_v_self->ch0_photon_timestamps[__pyx_8genexpr7__pyx_v_i]) * __pyx_v_self->resolution_ns)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 433, __pyx_L1_error)
+      __pyx_t_5 = PyFloat_FromDouble(((__pyx_v_self->ch0_photon_timestamps[__pyx_8genexpr7__pyx_v_i]) * __pyx_v_self->resolution_ns)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 443, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 433, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 443, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
   } /* exit inner scope */
@@ -12548,7 +12690,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch0_time
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ptu_decoder/stream_decoder.pyx":432
+  /* "ptu_decoder/stream_decoder.pyx":442
  * 
  *     property ch0_times_ns:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12568,7 +12710,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch0_time
   return __pyx_r;
 }
 
-/* "ptu_decoder/stream_decoder.pyx":436
+/* "ptu_decoder/stream_decoder.pyx":446
  * 
  *     property ch1_times_ns:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12605,7 +12747,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch1_time
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
 
-  /* "ptu_decoder/stream_decoder.pyx":437
+  /* "ptu_decoder/stream_decoder.pyx":447
  *     property ch1_times_ns:
  *         def __get__(self):
  *             return [self.ch1_photon_timestamps[i] * self.resolution_ns for i in range(self.ch1_timestamp_index)]             # <<<<<<<<<<<<<<
@@ -12614,15 +12756,15 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch1_time
  */
   __Pyx_XDECREF(__pyx_r);
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 437, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 447, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_2 = __pyx_v_self->ch1_timestamp_index;
     __pyx_t_3 = __pyx_t_2;
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_8genexpr8__pyx_v_i = __pyx_t_4;
-      __pyx_t_5 = PyFloat_FromDouble(((__pyx_v_self->ch1_photon_timestamps[__pyx_8genexpr8__pyx_v_i]) * __pyx_v_self->resolution_ns)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 437, __pyx_L1_error)
+      __pyx_t_5 = PyFloat_FromDouble(((__pyx_v_self->ch1_photon_timestamps[__pyx_8genexpr8__pyx_v_i]) * __pyx_v_self->resolution_ns)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 447, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 437, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 447, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
   } /* exit inner scope */
@@ -12630,7 +12772,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch1_time
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ptu_decoder/stream_decoder.pyx":436
+  /* "ptu_decoder/stream_decoder.pyx":446
  * 
  *     property ch1_times_ns:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12650,7 +12792,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_12ch1_time
   return __pyx_r;
 }
 
-/* "ptu_decoder/stream_decoder.pyx":440
+/* "ptu_decoder/stream_decoder.pyx":450
  * 
  *     property ch0_count:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12682,7 +12824,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_9ch0_count
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
 
-  /* "ptu_decoder/stream_decoder.pyx":441
+  /* "ptu_decoder/stream_decoder.pyx":451
  *     property ch0_count:
  *         def __get__(self):
  *             return self.ch0_timestamp_index             # <<<<<<<<<<<<<<
@@ -12690,13 +12832,13 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_9ch0_count
  *     property ch1_count:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->ch0_timestamp_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 441, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->ch0_timestamp_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 451, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ptu_decoder/stream_decoder.pyx":440
+  /* "ptu_decoder/stream_decoder.pyx":450
  * 
  *     property ch0_count:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12715,7 +12857,7 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_9ch0_count
   return __pyx_r;
 }
 
-/* "ptu_decoder/stream_decoder.pyx":444
+/* "ptu_decoder/stream_decoder.pyx":454
  * 
  *     property ch1_count:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12746,19 +12888,19 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_9ch1_count
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
 
-  /* "ptu_decoder/stream_decoder.pyx":445
+  /* "ptu_decoder/stream_decoder.pyx":455
  *     property ch1_count:
  *         def __get__(self):
  *             return self.ch1_timestamp_index             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->ch1_timestamp_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 445, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->ch1_timestamp_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 455, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ptu_decoder/stream_decoder.pyx":444
+  /* "ptu_decoder/stream_decoder.pyx":454
  * 
  *     property ch1_count:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -12866,15 +13008,15 @@ static int __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_13resolution_ns_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_7__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_9__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -12899,14 +13041,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_6__reduce_cython__(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self));
+  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_8__reduce_cython__(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self) {
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -12946,15 +13088,15 @@ static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_6__reduce_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_11__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_9__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_11__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_11__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_11__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -13028,7 +13170,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_8__setstate_cython__(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_10__setstate_cython__(((struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -13041,7 +13183,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_11ptu_decoder_14stream_decoder_10T2Streamer_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_11ptu_decoder_14stream_decoder_T2Streamer *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -13464,10 +13606,11 @@ static int __pyx_setprop_11ptu_decoder_14stream_decoder_10T2Streamer_resolution_
 }
 
 static PyMethodDef __pyx_methods_11ptu_decoder_14stream_decoder_T2Streamer[] = {
-  {"click", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3click, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"batch", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5batch, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"clear", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_3clear, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"click", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_5click, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"batch", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_7batch, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_9__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_11ptu_decoder_14stream_decoder_10T2Streamer_11__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -13623,6 +13766,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_T2Streamer___reduce_cython, __pyx_k_T2Streamer___reduce_cython, sizeof(__pyx_k_T2Streamer___reduce_cython), 0, 0, 1, 1},
     {&__pyx_n_s_T2Streamer___setstate_cython, __pyx_k_T2Streamer___setstate_cython, sizeof(__pyx_k_T2Streamer___setstate_cython), 0, 0, 1, 1},
     {&__pyx_n_s_T2Streamer_batch, __pyx_k_T2Streamer_batch, sizeof(__pyx_k_T2Streamer_batch), 0, 0, 1, 1},
+    {&__pyx_n_s_T2Streamer_clear, __pyx_k_T2Streamer_clear, sizeof(__pyx_k_T2Streamer_clear), 0, 0, 1, 1},
     {&__pyx_n_s_T2Streamer_click, __pyx_k_T2Streamer_click, sizeof(__pyx_k_T2Streamer_click), 0, 0, 1, 1},
     {&__pyx_n_s_T3Histogrammer, __pyx_k_T3Histogrammer, sizeof(__pyx_k_T3Histogrammer), 0, 0, 1, 1},
     {&__pyx_n_s_T3Histogrammer___reduce_cython, __pyx_k_T3Histogrammer___reduce_cython, sizeof(__pyx_k_T3Histogrammer___reduce_cython), 0, 0, 1, 1},
@@ -13640,7 +13784,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_u_Warning_some_measurement_time_le, __pyx_k_Warning_some_measurement_time_le, sizeof(__pyx_k_Warning_some_measurement_time_le), 0, 1, 0, 0},
     {&__pyx_n_s__14, __pyx_k__14, sizeof(__pyx_k__14), 0, 0, 1, 1},
     {&__pyx_kp_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
-    {&__pyx_n_s__37, __pyx_k__37, sizeof(__pyx_k__37), 0, 0, 1, 1},
+    {&__pyx_n_s__38, __pyx_k__38, sizeof(__pyx_k__38), 0, 0, 1, 1},
     {&__pyx_kp_u__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 1, 0, 0},
     {&__pyx_kp_u__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 1, 0, 0},
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
@@ -14012,30 +14156,39 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ptu_decoder/stream_decoder.pyx":392
  *         self.resolution_ns = resolution_ps / 1_000
  * 
+ *     def clear(self):             # <<<<<<<<<<<<<<
+ *         # reinitialize array with zeros
+ *         memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))
+ */
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_ptu_decoder_stream_decoder_p, __pyx_n_s_clear, 392, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 392, __pyx_L1_error)
+
+  /* "ptu_decoder/stream_decoder.pyx":402
+ *         self.overflow_correction = 0
+ * 
  *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
  *         cdef unsigned int time, channel
  *         cdef long long true_time
  */
-  __pyx_tuple__32 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_record, __pyx_n_s_time, __pyx_n_s_channel, __pyx_n_s_true_time, __pyx_n_s_markers, __pyx_n_s_new_size); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 392, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
-  __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_ptu_decoder_stream_decoder_p, __pyx_n_s_click_2, 392, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 392, __pyx_L1_error)
+  __pyx_tuple__33 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_record, __pyx_n_s_time, __pyx_n_s_channel, __pyx_n_s_true_time, __pyx_n_s_markers, __pyx_n_s_new_size); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(0, 402, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
+  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_ptu_decoder_stream_decoder_p, __pyx_n_s_click_2, 402, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 402, __pyx_L1_error)
 
-  /* "ptu_decoder/stream_decoder.pyx":427
+  /* "ptu_decoder/stream_decoder.pyx":437
  *                 pass
  * 
  *     def batch(self, records):             # <<<<<<<<<<<<<<
  *         for record in records:
  *             self.click(record)
  */
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_ptu_decoder_stream_decoder_p, __pyx_n_s_batch, 427, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 427, __pyx_L1_error)
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_ptu_decoder_stream_decoder_p, __pyx_n_s_batch, 437, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 437, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -14043,7 +14196,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -14634,26 +14787,39 @@ if (!__Pyx_RefNanny) {
   /* "ptu_decoder/stream_decoder.pyx":392
  *         self.resolution_ns = resolution_ps / 1_000
  * 
+ *     def clear(self):             # <<<<<<<<<<<<<<
+ *         # reinitialize array with zeros
+ *         memset(self.ch0_photon_timestamps, 0, self.ch0_max_timestamps * sizeof(uint32_t))
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_3clear, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer_clear, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 392, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer, __pyx_n_s_clear, __pyx_t_2) < 0) __PYX_ERR(0, 392, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer);
+
+  /* "ptu_decoder/stream_decoder.pyx":402
+ *         self.overflow_correction = 0
+ * 
  *     def click(self, uint32_t record):             # <<<<<<<<<<<<<<
  *         cdef unsigned int time, channel
  *         cdef long long true_time
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_3click, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer_click, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 392, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_5click, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer_click, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 402, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer, __pyx_n_s_click_2, __pyx_t_2) < 0) __PYX_ERR(0, 392, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer, __pyx_n_s_click_2, __pyx_t_2) < 0) __PYX_ERR(0, 402, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer);
 
-  /* "ptu_decoder/stream_decoder.pyx":427
+  /* "ptu_decoder/stream_decoder.pyx":437
  *                 pass
  * 
  *     def batch(self, records):             # <<<<<<<<<<<<<<
  *         for record in records:
  *             self.click(record)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_5batch, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer_batch, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 427, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_7batch, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer_batch, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 437, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer, __pyx_n_s_batch, __pyx_t_2) < 0) __PYX_ERR(0, 427, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer, __pyx_n_s_batch, __pyx_t_2) < 0) __PYX_ERR(0, 437, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_11ptu_decoder_14stream_decoder_T2Streamer);
 
@@ -14662,7 +14828,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_7__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer___reduce_cython, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_9__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer___reduce_cython, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -14673,7 +14839,7 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_9__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer___setstate_cython, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_11ptu_decoder_14stream_decoder_10T2Streamer_11__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_T2Streamer___setstate_cython, NULL, __pyx_n_s_ptu_decoder_stream_decoder, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -20926,7 +21092,7 @@ __Pyx_PyType_GetName(PyTypeObject* tp)
     if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
         PyErr_Clear();
         Py_XDECREF(name);
-        name = __Pyx_NewRef(__pyx_n_s__37);
+        name = __Pyx_NewRef(__pyx_n_s__38);
     }
     return name;
 }
