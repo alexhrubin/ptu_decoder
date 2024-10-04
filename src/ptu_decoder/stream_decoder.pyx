@@ -453,3 +453,225 @@ cdef class T2Streamer:
     property ch1_count:
         def __get__(self):
             return self.ch1_timestamp_index
+
+
+###########
+# distutils: language = c++
+# cython: language_level=3
+
+from libcpp.vector cimport vector
+from libc.math cimport fmin, fmax
+
+cdef class G2:
+    cdef int n_bins
+    cdef vector[double] bin_edges
+    cdef vector[vector[double]] bin
+    cdef vector[double] num_pairs
+    cdef double min_timestamp
+    cdef double max_timestamp
+    cdef dict data
+
+    def __init__(self, list bin_edges):
+        cdef int i
+        self.n_bins = len(bin_edges) - 1
+        self.bin_edges = vector[double]()
+        for edge in bin_edges:
+            self.bin_edges.push_back(edge)
+        self.bin = vector[vector[double]](self.n_bins)
+        self.num_pairs = vector[double](self.n_bins, 0.0)
+        self.min_timestamp = 0
+        self.max_timestamp = -1
+        self.data = {'a': [], 'b': []}
+    
+    @property
+    def normalization(self):
+        cdef double duration = self.max_timestamp - self.min_timestamp
+        cdef vector[double] denoms = vector[double](self.n_bins, 0.0)
+        cdef vector[double] a_data = vector[double]()
+        cdef vector[double] b_data = vector[double]()
+        cdef double max_b
+        cdef int i, j
+        cdef double tau
+        cdef int count_a, count_b
+
+        for a in self.data['a']:
+            a_data.push_back(a)
+        for b in self.data['b']:
+            b_data.push_back(b)
+
+        max_b = max(b_data) if not b_data.empty() else 0.0
+
+        for i in range(self.n_bins):
+            tau = self.bin_edges[i+1]
+            count_a = sum(1 for a in a_data if a >= tau)
+            count_b = sum(1 for b in b_data if b <= (max_b - tau))
+            denoms[i] = count_a * count_b
+
+        return [
+            (duration - self.bin_edges[i+1]) / denoms[i] if denoms[i] != 0 else 0
+            for i in range(self.n_bins)
+        ]
+
+    @property
+    def g2(self):
+        return [self.G2[i] * self.normalization[i] for i in range(self.n_bins)]
+
+    @property
+    def G2(self):
+        return [
+            self.num_pairs[i] / (self.bin_edges[i+1] - self.bin_edges[i])
+            for i in range(self.n_bins)
+        ]
+
+    cpdef void click(self, str channel, double timestamp):
+        cdef int i, j
+        cdef double stop, oldest_allowed
+        cdef vector[double] too_old
+
+        self.min_timestamp = fmin(timestamp, self.min_timestamp)
+        self.max_timestamp = fmax(timestamp, self.max_timestamp)
+        self.data[channel].append(timestamp)
+
+        if channel == 'b':
+            for i in range(self.n_bins):
+                stop = self.bin_edges[i+1]
+                oldest_allowed = timestamp - stop
+                too_old.clear()
+                
+                for j in range(self.bin[i].size()):
+                    if self.bin[i][j] <= oldest_allowed:
+                        too_old.push_back(self.bin[i][j])
+                
+                if not too_old.empty():
+                    self.bin[i].erase(
+                        self.bin[i].begin(),
+                        self.bin[i].begin() + too_old.size()
+                    )
+                    
+                    if i < self.n_bins - 1:
+                        self.bin[i + 1].insert(
+                            self.bin[i + 1].end(),
+                            too_old.begin(),
+                            too_old.end()
+                        )
+
+            for i in range(self.n_bins):
+                self.num_pairs[i] += self.bin[i].size()
+
+        if channel == 'a':
+            self.bin[0].push_back(timestamp)
+
+
+#####
+# cython: language_level=3
+# distutils: language = c
+# cython: boundscheck=False, wraparound=False, nonecheck=False
+
+from libc.stdlib cimport malloc, free
+from libc.math cimport fmax, fmin
+
+cdef double pnormalize(double* G, double* t, double* u, double* bins, int n_t, int n_u, int n_bins):
+    cdef double duration = fmax(t[n_t-1], u[n_u-1]) - fmin(t[0], u[0])
+    cdef double* Gn = <double*>malloc(n_bins * sizeof(double))
+    cdef int i, j
+    cdef double tau
+    cdef int t_count, u_count
+    cdef double u_max = u[n_u-1]
+    
+    for i in range(n_bins):
+        Gn[i] = G[i]
+    
+    for i in range(1, n_bins + 1):
+        tau = bins[i]
+        t_count = 0
+        u_count = 0
+        for j in range(n_t):
+            if t[j] >= tau:
+                t_count += 1
+        for j in range(n_u):
+            if u[j] <= (u_max - tau):
+                u_count += 1
+        Gn[i-1] *= ((duration - tau) / (t_count * u_count))
+    
+    for i in range(n_bins):
+        G[i] = Gn[i]
+    
+    free(Gn)
+    return duration
+
+cdef void pcorrelate_impl(double* t, double* u, double* bins, long long* counts,
+                          int n_t, int n_u, int n_bins):
+    cdef int i, j, k
+    cdef double ti, tau_min, tau_max
+    cdef int* imin = <int*>malloc(n_bins * sizeof(int))
+    cdef int* imax = <int*>malloc(n_bins * sizeof(int))
+    
+    for i in range(n_bins):
+        imin[i] = 0
+        imax[i] = 0
+        counts[i] = 0
+    
+    for i in range(n_t):
+        ti = t[i]
+        for k in range(n_bins):
+            tau_min = bins[k]
+            tau_max = bins[k+1]
+            
+            if k == 0:
+                j = imin[k]
+                while j < n_u:
+                    if u[j] - ti >= tau_min:
+                        break
+                    j += 1
+            
+            imin[k] = j
+            if imax[k] > j:
+                j = imax[k]
+            while j < n_u:
+                if u[j] - ti >= tau_max:
+                    break
+                j += 1
+            imax[k] = j
+        
+        for k in range(n_bins):
+            counts[k] += imax[k] - imin[k]
+    
+    free(imin)
+    free(imax)
+
+cdef double* list_to_array(list py_list, int* size):
+    cdef int i, n = len(py_list)
+    cdef double* arr = <double*>malloc(n * sizeof(double))
+    for i in range(n):
+        arr[i] = py_list[i]
+    size[0] = n
+    return arr
+
+def pcorrelate(list t, list u, list bins, bint normalize=False):
+    cdef int n_t, n_u, n_bins
+    cdef double *t_arr = list_to_array(t, &n_t)
+    cdef double *u_arr = list_to_array(u, &n_u)
+    cdef double *bins_arr = list_to_array(bins, &n_bins)
+    n_bins -= 1  # number of bins is one less than number of bin edges
+    
+    cdef long long* counts = <long long*>malloc(n_bins * sizeof(long long))
+    cdef double* G = <double*>malloc(n_bins * sizeof(double))
+    cdef int i
+    
+    pcorrelate_impl(t_arr, u_arr, bins_arr, counts, n_t, n_u, n_bins)
+    
+    for i in range(n_bins):
+        G[i] = counts[i] / (bins_arr[i+1] - bins_arr[i])
+    
+    if normalize:
+        pnormalize(G, t_arr, u_arr, bins_arr, n_t, n_u, n_bins)
+    
+    cdef list result = [G[i] for i in range(n_bins)]
+    
+    free(t_arr)
+    free(u_arr)
+    free(bins_arr)
+    free(counts)
+    free(G)
+    
+    return result, 
