@@ -157,6 +157,7 @@ def t3_to_histogram(
     cdef uint32_t record
     cdef size_t record_size = sizeof(record)
     cdef size_t read_count
+    cdef size_t i
     cdef char *buff = <char *>malloc(record_size * 1_000_000)
     cdef uint32_t channel
     cdef uint32_t dtime
@@ -166,6 +167,12 @@ def t3_to_histogram(
     cdef int current_hist_idx = 0
     cdef int n_windows = len(window_ends_nsync)
     cdef bint done = False
+    cdef double *window_ends_c = <double *>malloc(n_windows * sizeof(double))
+    cdef T3Histogrammer h
+
+    for i in range(<size_t>n_windows):
+        window_ends_c[i] = window_ends_nsync[i]
+    h = histogrammers[0]
 
     while not done:
         read_count = fread(buff, record_size, 1_000_000, fp)
@@ -189,14 +196,16 @@ def t3_to_histogram(
 
                 # This assumes the windows are wide enough that each will get at least 1 photon.
                 # That's a very reasonable assumption, but it's possible to violate it!
-                if true_nsync > window_ends_nsync[current_hist_idx]:
+                if true_nsync > window_ends_c[current_hist_idx]:
                     if current_hist_idx == n_windows - 1:
                         done = True
                         break
                     current_hist_idx += 1
+                    h = histogrammers[current_hist_idx]
 
-                histogrammers[current_hist_idx]._click(dtime)
+                h._click(dtime)
 
+    free(window_ends_c)
     free(buff)
     fclose(fp)
 
@@ -274,7 +283,7 @@ cdef class T3Histogrammer:
                 total += self.counts_arr[i]
             return total / self.runtime_sec
 
-    def click(self, uint32_t record):
+    cpdef click(self, uint32_t record):
         cdef uint32_t channel = (record & 0xF0000000)
         cdef uint32_t dtime = (record & 0x0FFF0000) >> 16
         cdef uint32_t nsync = (record & 0x0000FFFF)
@@ -290,7 +299,7 @@ cdef class T3Histogrammer:
                 return
             self._click(dtime)
 
-    def _click(self, uint32_t dtime):
+    cpdef _click(self, uint32_t dtime):
         cdef uint32_t *new_counts_arr
         cdef int new_size
 
@@ -334,11 +343,12 @@ def t2_to_timestamps(str path):
     cdef FILE *fp = fopen(path.encode('utf-8'), "rb")
     fseek(fp, header_end, SEEK_SET)
 
-    processor = T2Streamer(resolution_ps)
+    cdef T2Streamer proc = T2Streamer(resolution_ps)
 
     cdef uint32_t record
     cdef size_t record_size = sizeof(record)
     cdef size_t read_count
+    cdef size_t i
     cdef char *buff = <char *>malloc(record_size * 1_000_000)
 
     while True:
@@ -348,11 +358,11 @@ def t2_to_timestamps(str path):
 
         for i in range(read_count):
             record = (<uint32_t *>buff)[i]
-            processor.click(record)
+            proc.click(record)
 
     free(buff)
     fclose(fp)
-    return processor.ch0_times_ns, processor.ch1_times_ns
+    return proc.ch0_times_ns, proc.ch1_times_ns
 
 
 cdef class T2Streamer:
@@ -390,7 +400,7 @@ cdef class T2Streamer:
         self.ch1_max_timestamps = 1_000_000
         self.overflow_correction = 0
 
-    def click(self, uint32_t record):
+    cpdef click(self, uint32_t record):
         cdef unsigned int time, channel
         cdef long long true_time
         cdef size_t new_size
