@@ -3,7 +3,7 @@
 
 from libc.stdio cimport FILE, fopen, fread, fseek, fclose, SEEK_SET
 from libc.string cimport memset
-from libc.stdint cimport int32_t, int64_t, uint32_t
+from libc.stdint cimport int32_t, int64_t, uint16_t, uint32_t
 from libc.stdlib cimport malloc, free, realloc
 from libcpp.map cimport map
 from libcpp.vector cimport vector
@@ -169,6 +169,8 @@ def t3_to_histogram(
     cdef bint done = False
     cdef double *window_ends_c = <double *>malloc(n_windows * sizeof(double))
     cdef T3Histogrammer h
+    cdef uint16_t *dtimes_buf = <uint16_t *>malloc(1_000_000 * sizeof(uint16_t))
+    cdef int dtime_count = 0
 
     for i in range(<size_t>n_windows):
         window_ends_c[i] = window_ends_nsync[i]
@@ -183,11 +185,11 @@ def t3_to_histogram(
         for i in range(read_count):
             record = (<uint32_t *>buff)[i]
 
-            channel = (record & 0xF0000000)
+            channel = record >> 28
             dtime = (record & 0x0FFF0000) >> 16
             nsync = (record & 0x0000FFFF)
 
-            if channel == 0xF0000000:  # special record
+            if channel == 0xF:  # special record (0xF = 15)
                 if dtime == 0:  # overflow
                     overflow_correction += 65536
                 # marker records: no photon to record
@@ -198,14 +200,24 @@ def t3_to_histogram(
                 # That's a very reasonable assumption, but it's possible to violate it!
                 if true_nsync > window_ends_c[current_hist_idx]:
                     if current_hist_idx == n_windows - 1:
+                        h._add_dtimes(dtimes_buf, dtime_count)
+                        dtime_count = 0
                         done = True
                         break
+                    h._add_dtimes(dtimes_buf, dtime_count)
+                    dtime_count = 0
                     current_hist_idx += 1
                     h = histogrammers[current_hist_idx]
 
-                h._click(dtime)
+                dtimes_buf[dtime_count] = <uint16_t>dtime
+                dtime_count += 1
+
+        if not done:
+            h._add_dtimes(dtimes_buf, dtime_count)
+            dtime_count = 0
 
     free(window_ends_c)
+    free(dtimes_buf)
     free(buff)
     fclose(fp)
 
@@ -284,11 +296,11 @@ cdef class T3Histogrammer:
             return total / self.runtime_sec
 
     cpdef click(self, uint32_t record):
-        cdef uint32_t channel = (record & 0xF0000000)
+        cdef uint32_t channel = record >> 28
         cdef uint32_t dtime = (record & 0x0FFF0000) >> 16
         cdef uint32_t nsync = (record & 0x0000FFFF)
 
-        if channel == 0xF0000000:  # special record
+        if channel == 0xF:  # special record (0xF = 15)
             if dtime == 0:  # overflow
                 self.overflow_correction += 65536
             else:
@@ -320,6 +332,27 @@ cdef class T3Histogrammer:
             self.counts_arr = new_counts_arr
             self.array_size = new_size
             self.counts_arr[dtime] += 1
+
+    cdef void _add_dtimes(self, uint16_t *dtimes, int n):
+        # Exact same filter semantics as _click: exclude if (dtime < min_bin) or (max_bin < dtime)
+        cdef int i, new_size
+        cdef uint16_t d
+        cdef uint32_t *new_arr
+        for i in range(n):
+            d = dtimes[i]
+            if (<double>d < self.min_bin) or (self.max_bin < <double>d):
+                continue
+            if <int>d < self.array_size:
+                self.counts_arr[d] += 1
+            else:
+                new_size = max(int(self.array_size * 1.01), <int>d + 1)
+                new_arr = <uint32_t *>realloc(self.counts_arr, new_size * sizeof(uint32_t))
+                if new_arr is NULL:
+                    return
+                memset(new_arr + self.array_size, 0, (new_size - self.array_size) * sizeof(uint32_t))
+                self.counts_arr = new_arr
+                self.array_size = new_size
+                self.counts_arr[d] += 1
 
     def batch(self, records):
         for record in records:
@@ -356,9 +389,7 @@ def t2_to_timestamps(str path):
         if read_count == 0:  # hit EOF
             break
 
-        for i in range(read_count):
-            record = (<uint32_t *>buff)[i]
-            proc.click(record)
+        proc._process_chunk(<uint32_t *>buff, read_count)
 
     free(buff)
     fclose(fp)
@@ -406,7 +437,7 @@ cdef class T2Streamer:
         cdef size_t new_size
 
         time = record & 0x0FFFFFFF      # first 28 bits
-        channel = (record & 0xF0000000) >> 28  # last 4 bits
+        channel = record >> 28          # top 4 bits as 0-15
 
         if channel == 0xF:
             if (time & 0xF) == 0:
@@ -428,6 +459,36 @@ cdef class T2Streamer:
                 self.ch1_max_timestamps = new_size
             self.ch1_photon_timestamps[self.ch1_timestamp_index] = true_time
             self.ch1_timestamp_index += 1
+
+    cdef void _process_chunk(self, uint32_t *buff, size_t n):
+        cdef size_t i
+        cdef unsigned int time, channel
+        cdef long long true_time
+        cdef size_t new_size
+        for i in range(n):
+            time = buff[i] & 0x0FFFFFFF
+            channel = buff[i] >> 28
+            if channel == 0xF:
+                if (time & 0xF) == 0:
+                    self.overflow_correction += TIME_OVERFLOW
+                continue
+            true_time = self.overflow_correction + time
+            if channel == 0:
+                if self.ch0_timestamp_index == self.ch0_max_timestamps - 1:
+                    new_size = <size_t>(1.1 * self.ch0_max_timestamps)
+                    self.ch0_photon_timestamps = <long long *>realloc(
+                        self.ch0_photon_timestamps, new_size * sizeof(long long))
+                    self.ch0_max_timestamps = new_size
+                self.ch0_photon_timestamps[self.ch0_timestamp_index] = true_time
+                self.ch0_timestamp_index += 1
+            elif channel == 1:
+                if self.ch1_timestamp_index == self.ch1_max_timestamps - 1:
+                    new_size = <size_t>(1.1 * self.ch1_max_timestamps)
+                    self.ch1_photon_timestamps = <long long *>realloc(
+                        self.ch1_photon_timestamps, new_size * sizeof(long long))
+                    self.ch1_max_timestamps = new_size
+                self.ch1_photon_timestamps[self.ch1_timestamp_index] = true_time
+                self.ch1_timestamp_index += 1
 
     def batch(self, records):
         for record in records:
@@ -516,7 +577,7 @@ cdef class T2TimestampIterator:
             self.read_position += 1
 
             time = record & 0x0FFFFFFF
-            channel = (record & 0xF0000000) >> 28
+            channel = record >> 28
 
             if channel == 0xF:  # special record
                 if (time & 0xF) == 0:  # overflow
