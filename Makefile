@@ -4,7 +4,7 @@ build:
 	python setup.py build_ext --inplace
 
 install:
-	# python setup.py install
+	pip uninstall -y ptu_decoder || true
 	pip install . --no-cache-dir --force-reinstall
 
 clean:
