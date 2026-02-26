@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=61", "Cython>=3.0", "numpy"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "ptu_decoder"
