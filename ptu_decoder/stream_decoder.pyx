@@ -227,6 +227,154 @@ def t3_to_histogram(
     return histogrammers
 
 
+def t3_to_histogram_by_marker(
+    str path,
+    double min_ns = -1,
+    double max_ns = 0xFFFFFFFF,
+    window_ends_sec = [],
+    int segments = 1,
+):
+    if segments < 1:
+        raise ValueError("Cannot have < 1 segments.")
+    if window_ends_sec and segments > 1:
+        raise ValueError("Cannot specify both `window_ends_sec` and `segments` simultaneously.")
+    if min_ns > max_ns:
+        raise ValueError("min_dtime cannot be larger than max_dtime.")
+
+    tags, header_end = read_header(path)
+
+    rec_type = tags["TTResultFormat_TTTRRecType"]
+    if rec_type != _RT_PICOHARP_T3:
+        raise ValueError(f"Unsupported record type {rec_type:#010x}. Only PicoHarp T3 is supported.")
+
+    cdef FILE *fp = fopen(path.encode('utf-8'), "rb")
+    fseek(fp, header_end, SEEK_SET)
+
+    bin_size_ps = tags["MeasDesc_Resolution"] * 1e12
+    sync_rate_Hz = tags["TTResult_SyncRate"]
+    measurement_runtime_sec = tags["TTResult_StopAfter"] / 1000
+
+    if window_ends_sec:
+        last_we = window_ends_sec[len(window_ends_sec) - 1]
+        if last_we < measurement_runtime_sec:
+            remaining_time = measurement_runtime_sec - last_we
+            print(f"Warning: some measurement time left unchecked: ({remaining_time:.1f} sec)")
+    else:
+        window_ends_sec = [(i + 1) * measurement_runtime_sec // segments for i in range(segments)]
+
+    window_ends_nsync = [we * sync_rate_Hz for we in window_ends_sec]
+    n_we = len(window_ends_sec)
+    window_starts_sec = [0] + window_ends_sec[:n_we - 1]
+
+    # 3 histogrammers per window: index [window_idx * 3 + marker_idx]
+    histogrammers = [
+        T3Histogrammer(
+            bin_size_ps=bin_size_ps,
+            sync_rate_Hz=sync_rate_Hz,
+            min_ns=min_ns,
+            max_ns=max_ns,
+            start_sec=ws,
+            stop_sec=we,
+        )
+        for ws, we in zip(window_starts_sec, window_ends_sec)
+        for _ in range(3)
+    ]
+
+    cdef uint32_t record
+    cdef size_t record_size = sizeof(record)
+    cdef size_t read_count
+    cdef size_t i
+    cdef char *buff = <char *>malloc(record_size * 1_000_000)
+    cdef uint32_t channel
+    cdef uint32_t dtime
+    cdef uint32_t nsync
+    cdef long long overflow_correction = 0
+    cdef long long true_nsync = 0
+    cdef int current_hist_idx = 0
+    cdef int n_windows = len(window_ends_nsync)
+    cdef bint done = False
+    cdef double *window_ends_c = <double *>malloc(n_windows * sizeof(double))
+    cdef T3Histogrammer h0, h1, h2
+    cdef uint16_t *dtimes_buf0 = <uint16_t *>malloc(1_000_000 * sizeof(uint16_t))
+    cdef uint16_t *dtimes_buf1 = <uint16_t *>malloc(1_000_000 * sizeof(uint16_t))
+    cdef uint16_t *dtimes_buf2 = <uint16_t *>malloc(1_000_000 * sizeof(uint16_t))
+    cdef int n_buf0 = 0
+    cdef int n_buf1 = 0
+    cdef int n_buf2 = 0
+    cdef int current_marker = 0
+
+    for i in range(<size_t>n_windows):
+        window_ends_c[i] = window_ends_nsync[i]
+    h0 = histogrammers[0]
+    h1 = histogrammers[1]
+    h2 = histogrammers[2]
+
+    while not done:
+        read_count = fread(buff, record_size, 1_000_000, fp)
+
+        if read_count == 0:  # hit EOF
+            break
+
+        for i in range(read_count):
+            record = (<uint32_t *>buff)[i]
+
+            channel = record >> 28
+            dtime = (record & 0x0FFF0000) >> 16
+            nsync = (record & 0x0000FFFF)
+
+            if channel == 0xF:  # special record
+                if dtime == 0:  # overflow
+                    overflow_correction += 65536
+                else:  # marker record — route future photons to this marker's histogram
+                    if dtime & 1:
+                        current_marker = 0
+                    elif dtime & 2:
+                        current_marker = 1
+                    elif dtime & 4:
+                        current_marker = 2
+            else:
+                true_nsync = overflow_correction + nsync
+
+                if true_nsync > window_ends_c[current_hist_idx]:
+                    if current_hist_idx == n_windows - 1:
+                        h0._add_dtimes(dtimes_buf0, n_buf0); n_buf0 = 0
+                        h1._add_dtimes(dtimes_buf1, n_buf1); n_buf1 = 0
+                        h2._add_dtimes(dtimes_buf2, n_buf2); n_buf2 = 0
+                        done = True
+                        break
+                    h0._add_dtimes(dtimes_buf0, n_buf0); n_buf0 = 0
+                    h1._add_dtimes(dtimes_buf1, n_buf1); n_buf1 = 0
+                    h2._add_dtimes(dtimes_buf2, n_buf2); n_buf2 = 0
+                    current_hist_idx += 1
+                    h0 = histogrammers[current_hist_idx * 3]
+                    h1 = histogrammers[current_hist_idx * 3 + 1]
+                    h2 = histogrammers[current_hist_idx * 3 + 2]
+
+                if current_marker == 0:
+                    dtimes_buf0[n_buf0] = <uint16_t>dtime; n_buf0 += 1
+                elif current_marker == 1:
+                    dtimes_buf1[n_buf1] = <uint16_t>dtime; n_buf1 += 1
+                else:
+                    dtimes_buf2[n_buf2] = <uint16_t>dtime; n_buf2 += 1
+
+        if not done:
+            h0._add_dtimes(dtimes_buf0, n_buf0); n_buf0 = 0
+            h1._add_dtimes(dtimes_buf1, n_buf1); n_buf1 = 0
+            h2._add_dtimes(dtimes_buf2, n_buf2); n_buf2 = 0
+
+    free(window_ends_c)
+    free(dtimes_buf0)
+    free(dtimes_buf1)
+    free(dtimes_buf2)
+    free(buff)
+    fclose(fp)
+
+    if n_windows == 1:
+        return [histogrammers[0], histogrammers[1], histogrammers[2]]
+
+    return [[histogrammers[wi * 3 + mi] for mi in range(3)] for wi in range(n_windows)]
+
+
 cdef class T3Histogrammer:
     cdef public double bin_size_ns
     cdef public double min_bin, max_bin

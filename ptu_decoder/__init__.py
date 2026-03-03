@@ -3,6 +3,7 @@ from ptu_decoder.stream_decoder import (
     t2_to_timestamps,
     t2_iterator,
     t3_to_histogram,
+    t3_to_histogram_by_marker,
     T2Streamer,
     T3Histogrammer,
     G2,
